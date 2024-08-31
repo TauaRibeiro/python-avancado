@@ -5,35 +5,45 @@ def processar(tarefas):
     buffer = []
 
     for elemento in tarefas:
-        buffer.append(elemento['tarefa'])
         buffer.append(elemento['prioridade'])
+        buffer.append(elemento['tarefa'])
 
         if len(fila) == 0:
             fila.append(buffer[:])
         else:
+            adicionar = True
+            
             for index, ordem in enumerate(fila):
-                if elemento['prioridade'] < ordem[1]:
+                if elemento['prioridade'] < ordem[0]:
                     fila.insert(index, buffer[:])
 
+                    adicionar = False
+                    break
+                elif elemento['prioridade'] == ordem[0]:
+                    ordem.append(elemento['tarefa'])
+
+                    adicionar = False
+                    break
+            if adicionar:
+                fila.append(buffer[:])
+
         buffer.clear()
-        
-    print(fila)
 
     for elemento in fila:
-        print('REALIZANDO TAREFAS DE PRIORIDADE ' + elemento['prioridade'])
-        for x in range(len(elemento), 0):
-            print('Executando '+ elemento.pop(), flush= True)
+        print('REALIZANDO TAREFAS DE PRIORIDADE ' + str(elemento[0]))
+        for x in range(len(elemento), 1, -1):
+            print('Executando '+ elemento.pop(1), flush= True)
 
-            sleep(2)
-    print()
-
+            sleep(1)
+        print('-'*30)
+        sleep(2)
 
 entrada = dict()
 tarefas = list()
 
 while True:
     entrada['tarefa'] = input('Digite a tarefa a ser realizada: ')
-    entrada['prioridade'] = int(input('Digite a prioridade da tarefa (1 à 3): '))
+    entrada['prioridade'] = int(input('Digite a prioridade da tarefa: '))
 
     tarefas.append(entrada.copy())
     entrada.clear()
@@ -57,4 +67,3 @@ while True:
         break
     
 processar(tarefas)    
-
