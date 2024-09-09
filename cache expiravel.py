@@ -1,41 +1,33 @@
-# a ser melhorado
-
 import time
 
-def tempo_expirar(tempo= 60):
-    def cache_expiravel(funcao):
+def cache_expiravel(tempo= 60):
+    """Decorador que implementa um cache de armazenamento temporário
+
+    Parâmetros:
+        tempo (float, opicional): Tempo em segundos que o cache será mantido, após esse tempo ele é deletado. Padrão é 60 segundos (1 minuto).
+    """
+    def decorador(funcao):
         tempo_expiracao = time.time() + tempo
-        cache = None
+        cache = dict()
 
         def funcao_decorada(*args, **kwargs):
             nonlocal tempo_expiracao, cache
 
-            if cache == None or time.time() > tempo_expiracao:    
-                
-                cache = funcao(*args, **kwargs)
+            chave = (args, tuple(kwargs.items()))
+
+            if len(cache) == 0 or time.time() > tempo_expiracao:
+                cache.clear()    
+
+                cache[chave] = funcao(*args, **kwargs)
 
                 if time.time() > tempo_expiracao:
                     tempo_expiracao = time.time() + tempo
+
+            elif not chave in cache.keys():
+                cache[chave] = funcao(*args, **kwargs)
             
-            return cache
+
+            return cache[chave]
         return funcao_decorada
-    return cache_expiravel            
+    return decorador          
             
-@tempo_expirar(5)
-def fatorial(numero):
-    if numero == 0:
-        print("Executando...")
-        return 1
-    
-    return numero*fatorial(numero-1)
-
-
-print(fatorial(3))
-time.sleep(3)
-
-print(fatorial(3))
-time.sleep(3)
-
-print(fatorial(3))
-time.sleep(3)
-
