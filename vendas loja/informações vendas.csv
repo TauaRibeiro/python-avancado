@@ -1,0 +1,5 @@
+ID_VENDA,Produto,Quantidade,Preço_Unitário,Data_Venda,Vendedor
+0,Macarrão,10,7.99,10/05/2003,Natan
+1,Sabão,6,3.5,08/04/2005,João
+2,Óleo,5,8,10/07/2023,Marcos
+3,Biscoito,15,7.5,10/06/2005,Natan
