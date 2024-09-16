@@ -49,7 +49,7 @@ def formatar_data(data):
 def maior_volume(dados, data_inicio, data_fim):
     vendedor_vendas = dict()
 
-    maior = list()
+    resultado = list()
     for venda in dados:
         vendedor = venda['Vendedor']
         quantidade = venda['Quantidade']
@@ -58,20 +58,20 @@ def maior_volume(dados, data_inicio, data_fim):
         
         if intervalo_datas(data_comparacao, data_inicio, data_fim):
             if not vendedor in vendedor_vendas.keys():
-                if len(vendedor_vendas.keys()) == 0:
-                    maior.append(vendedor)
                 vendedor_vendas[vendedor] = quantidade
             else:
                 vendedor_vendas[vendedor] += quantidade
 
-            if vendedor_vendas[vendedor] > vendedor_vendas[maior[0]]:
-                maior.clear()
-                maior.append(vendedor)
-            elif vendedor_vendas[vendedor] == vendedor_vendas[maior[0]] and not vendedor in maior:
-                maior.append(vendedor)
+    for vendedor, quantidade in vendedor_vendas.items():
+        if len(resultado) == 0:
+            resultado.append(vendedor)
+        elif quantidade >= vendedor_vendas[resultado[0]] and not vendedor in resultado:
+            if quantidade > vendedor_vendas[resultado[0]]:
+                resultado.clear()
+            resultado.append(vendedor)
     
-    return maior if len(maior) > 0 else None
-
+    return resultado
+    
 def receita_total(dados, data_inicio, data_fim):
     data_inicio = formatar_data(data_inicio)
     data_fim = formatar_data(data_fim)
@@ -93,30 +93,35 @@ def mais_vendido(dados, data_inicio, data_fim):
     data_inicio = formatar_data(data_inicio)
     data_fim = formatar_data(data_fim)
 
-    produto_mais_vendido = list()
+    numero_vendas = dict()
+    resultado = list()
 
     for venda in dados:
         produto = venda['Produto']
-        valor_venda = float(venda['Quantidade'])*float(venda['Preço_Unitário'])
+        quantidade = venda['Quantidade']
 
-        if len(produto_mais_vendido) == 0:
-            produto_mais_vendido.append([produto, valor_venda])
-        elif valor_venda > produto_mais_vendido[1]:
-            produto_mais_vendido.clear()
-            produto_mais_vendido.append([produto, valor_venda])
+        if produto in numero_vendas.keys():
+            numero_vendas[produto] += quantidade
         else:
-            for i in produto_mais_vendido:
-                print()
-                # A fazer
-                # if not produto in i and :
+            numero_vendas[produto] = quantidade
 
-    return produto_mais_vendido
+    for produto, quantidade in numero_vendas.items():
+        if len(resultado) == 0:
+            resultado.append(produto)
+
+        if quantidade >= numero_vendas[resultado[0]] and not produto in resultado:
+            if quantidade > numero_vendas[resultado[0]]:
+                resultado.clear()
+            
+            resultado.append(produto)
+
+    return resultado          
 
 dados = [
     {'ID_VENDA': 0, 'Produto': 'Macarrão', 'Quantidade': 10, 'Preço_Unitário': 7.99, 'Data_Venda': '10/05/2003', 'Vendedor': 'Natan'},
     {'ID_VENDA': 1, 'Produto': 'Sabão', 'Quantidade': 6, 'Preço_Unitário': 3.50, 'Data_Venda': '08/04/2005', 'Vendedor': 'João'},
-    {'ID_VENDA': 2, 'Produto': 'Óleo', 'Quantidade': 5, 'Preço_Unitário': 8, 'Data_Venda': '10/07/2023', 'Vendedor': 'Marcos'},
+    {'ID_VENDA': 2, 'Produto': 'Leite', 'Quantidade': 6, 'Preço_Unitário': 8, 'Data_Venda': '10/07/2023', 'Vendedor': 'Marcos'},
     {'ID_VENDA': 3, 'Produto': 'Biscoito', 'Quantidade': 5, 'Preço_Unitário': 7.50, 'Data_Venda': '10/06/2005', 'Vendedor': 'Natan'}
 ]
 
-print(receita_total(dados, '10/05/2003', '13/09/2024'))
+print(maior_volume(dados, '09/05/2003', '13/09/2024'))
