@@ -1,28 +1,31 @@
-import csv
-import pandas as pd
-import numpy as np
+import modulo_funcoes as md
 
-def leitura_arquivo():
-    dados = []
+dados = md.leitura_dados()
 
-    with open('vendas loja/informações vendas.csv', mode= 'r', encoding= 'utf-8') as arquivo:
-        leitor = csv.DictReader(arquivo)
+while True:
+    print('='*40)
+    print(f'{"MENU":^40}')
+    print('-'*40)
+    print('1- Vendedor com maior volume de vendas',
+          '\n2- Receita total de cada vendedor',
+          '\n3- Produto mais vendido',
+          '\n4- Relatório final',
+          '\n5- Sair')
+    print('-'*40)
+    decisao = int(input('Digite o número da opção desejada: '))
 
-        for linha in leitor:
-            dados.append(linha)
-    
-    return dados
-
-def gravacao_arquivo(dados):
-    with open('vendas loja/informações vendas.csv', mode= 'w', encoding= 'utf-8') as arquivo:
-        gravador = csv.DictWriter(arquivo)
-
-        gravador.writeheader()
-        gravador.writerow()
-    
-dados = leitura_arquivo()
-
-tabela = pd.DataFrame(data= dados)
-tabela.sort_values(by= 'idade', ascending= False, inplace= True)
-print(tabela)
-print()
+    match(decisao):
+        case 1:
+            # A terminar
+            data_inicio = input('Digite a data no formata')
+        case 2:
+            print()
+        case 3:
+            print()
+        case 4:
+            print()
+        case 5:
+            break
+        case _:
+            print('Opção inválida...')
+        

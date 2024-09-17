@@ -1,4 +1,5 @@
 import csv, datetime, re
+from collections import OrderedDict as od
 
 def leitura_dados():
     dados = list()
@@ -10,15 +11,6 @@ def leitura_dados():
             dados.append(linha)
 
     return dados
-
-def gravador_dados(dados):
-    with open('vendas loja/informações vendas.csv', 'w', encoding= 'utf-8', newline= '') as arquivo:
-        campos = list(dados[0].keys())
-
-        gravador = csv.DictWriter(arquivo, campos)
-
-        gravador.writeheader()
-        gravador.writerows(dados)
 
 def intervalo_datas(analise, inicio, fim):
     analise = formatar_data(analise)
@@ -34,7 +26,7 @@ def intervalo_datas(analise, inicio, fim):
 
 def formatar_data(data):
 
-    padrao = r'(\d{2})/(\d{2})/(\d{4})'
+    padrao = r'(\d+)/(\d+)/(\d+)'
 
     nova_data = re.split(padrao, data)
 
@@ -49,7 +41,7 @@ def formatar_data(data):
 def maior_volume(dados, data_inicio, data_fim):
     vendedor_vendas = dict()
 
-    resultado = list()
+    resultado = dict()
     for venda in dados:
         vendedor = venda['Vendedor']
         quantidade = venda['Quantidade']
@@ -63,12 +55,14 @@ def maior_volume(dados, data_inicio, data_fim):
                 vendedor_vendas[vendedor] += quantidade
 
     for vendedor, quantidade in vendedor_vendas.items():
+        quantidades = list(resultado.keys())
+
         if len(resultado) == 0:
-            resultado.append(vendedor)
-        elif quantidade >= vendedor_vendas[resultado[0]] and not vendedor in resultado:
-            if quantidade > vendedor_vendas[resultado[0]]:
+            resultado[vendedor] = quantidade
+        elif quantidade >= vendedor_vendas[quantidades[0]]:
+            if quantidade > vendedor_vendas[quantidades[0]]:
                 resultado.clear()
-            resultado.append(vendedor)
+            resultado[vendedor] = quantidade
     
     return resultado
     
@@ -117,11 +111,12 @@ def mais_vendido(dados, data_inicio, data_fim):
 
     return resultado          
 
-dados = [
-    {'ID_VENDA': 0, 'Produto': 'Macarrão', 'Quantidade': 10, 'Preço_Unitário': 7.99, 'Data_Venda': '10/05/2003', 'Vendedor': 'Natan'},
-    {'ID_VENDA': 1, 'Produto': 'Sabão', 'Quantidade': 6, 'Preço_Unitário': 3.50, 'Data_Venda': '08/04/2005', 'Vendedor': 'João'},
-    {'ID_VENDA': 2, 'Produto': 'Leite', 'Quantidade': 6, 'Preço_Unitário': 8, 'Data_Venda': '10/07/2023', 'Vendedor': 'Marcos'},
-    {'ID_VENDA': 3, 'Produto': 'Biscoito', 'Quantidade': 5, 'Preço_Unitário': 7.50, 'Data_Venda': '10/06/2005', 'Vendedor': 'Natan'}
-]
+# dados = [
+#     {'ID_VENDA': 0, 'Produto': 'Macarrão', 'Quantidade': 10, 'Preço_Unitário': 7.99, 'Data_Venda': '10/05/2003', 'Vendedor': 'Natan'},
+#     {'ID_VENDA': 1, 'Produto': 'Sabão', 'Quantidade': 6, 'Preço_Unitário': 3.50, 'Data_Venda': '08/04/2005', 'Vendedor': 'João'},
+#     {'ID_VENDA': 2, 'Produto': 'Leite', 'Quantidade': 6, 'Preço_Unitário': 8, 'Data_Venda': '10/07/2023', 'Vendedor': 'Marcos'},
+#     {'ID_VENDA': 3, 'Produto': 'Biscoito', 'Quantidade': 5, 'Preço_Unitário': 7.50, 'Data_Venda': '10/06/2005', 'Vendedor': 'Natan'}
+# ]
 
-print(maior_volume(dados, '09/05/2003', '13/09/2024'))
+# print(receita_total(dados, '09/05/2003', '13/09/2024'))
+
