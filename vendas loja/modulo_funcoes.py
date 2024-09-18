@@ -64,7 +64,7 @@ def maior_volume(dados, data_inicio, data_fim):
                 resultado.clear()
             resultado[vendedor] = quantidade
     
-    return resultado
+    return resultado if len(resultado) > 0 else None
     
 def receita_total(dados, data_inicio, data_fim):
     data_inicio = formatar_data(data_inicio)
@@ -81,8 +81,8 @@ def receita_total(dados, data_inicio, data_fim):
         else:
             receita[vendedor] += valor_venda
     
-    return receita
-
+    return receita if len(receita) > 0 else None
+# Consertar erro
 def mais_vendido(dados, data_inicio, data_fim):
     data_inicio = formatar_data(data_inicio)
     data_fim = formatar_data(data_fim)
@@ -109,7 +109,7 @@ def mais_vendido(dados, data_inicio, data_fim):
             
             resultado.append(produto)
 
-    return resultado          
+    return resultado if len(resultado) > 0 else None         
 
 # dados = [
 #     {'ID_VENDA': 0, 'Produto': 'Macarrão', 'Quantidade': 10, 'Preço_Unitário': 7.99, 'Data_Venda': '10/05/2003', 'Vendedor': 'Natan'},
