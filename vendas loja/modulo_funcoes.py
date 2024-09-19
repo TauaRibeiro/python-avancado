@@ -88,7 +88,7 @@ def mais_vendido(dados, data_inicio, data_fim):
     data_fim = formatar_data(data_fim)
 
     numero_vendas = dict()
-    resultado = list()
+    resultado = dict()
 
     for venda in dados:
         produto = venda['Produto']
@@ -100,14 +100,15 @@ def mais_vendido(dados, data_inicio, data_fim):
             numero_vendas[produto] = quantidade
 
     for produto, quantidade in numero_vendas.items():
-        if len(resultado) == 0:
-            resultado.append(produto)
+        chaveReferencia = list(resultado.keys())
 
-        if quantidade >= numero_vendas[resultado[0]] and not produto in resultado:
-            if quantidade > numero_vendas[resultado[0]]:
+        if len(resultado) == 0:
+            resultado[produto] = quantidade
+        elif quantidade >= numero_vendas[chaveReferencia[0]] and not produto in resultado:
+            if quantidade > numero_vendas[chaveReferencia[0]]:
                 resultado.clear()
             
-            resultado.append(produto)
+            resultado[produto] = quantidade
 
     return resultado if len(resultado) > 0 else None         
 

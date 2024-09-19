@@ -87,7 +87,29 @@ while True:
                     print(f'PRODUTO: {vendedor}',
                           f'\nQUANTIDADE: {quantidade}')
         case 4:
-            print()
+            while True:
+                data_inicio = input('Digite a data de inicio no formata (dd/mm/aaaa): ')
+                data_fim = input('Digite a data final no formato (dd/mm/aaaa): ')
+                print('-'*40)
+
+                if re.search(r'(\d+)/(\d+)/(\d+)', data_inicio) != None and re.search(r'(\d+)/(\d+)/(\d+)', data_fim) != None:
+                    break
+                
+                print('Data de início e/ou fim inválidas, por favor tente novamente...')
+                print('-'*40)
+
+            maiorVolume = md.maior_volume(dados, data_inicio, data_fim)
+            maiorReceita = md.receita_total(dados, data_inicio, data_fim)
+            maisVendido = md.mais_vendido(dados, data_inicio, data_fim)
+
+            print(f'{"O vendedor" if len(maiorVolume) == 1 else "Os vendedores"} com maior volume de vendas ',
+                  f'{"foi" if len(maiorVolume) == 1 else "foram"}: {list(maiorVolume.keys())}.',
+                  f'Que {"vendeu" if len(maiorVolume) == 1 else "venderam"} {list(maiorVolume.values())[0]}',
+                  f'{"unidade" if list(maiorVolume.values())[0] == 1 else "unidades"}.')
+            print('-'*40)
+            print(f'{"O vendedor" if len(maiorReceita) == 1 else "Os vendedores"} com maior a maior receita ',
+                  f'{"foi" if len(maiorReceita) == 1 else "foram"}: {list(maiorReceita.keys())}.',
+                  f'Que {"faturou" if len(maiorReceita) == 1 else "faturaram"} R$ {list(maiorReceita.values())[0]:.2f}')
         case 5:
             break
         case _:
