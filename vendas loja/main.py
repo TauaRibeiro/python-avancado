@@ -1,7 +1,8 @@
 import modulo_funcoes as md
-import re
 
 dados = md.leitura_dados()
+
+
 
 while True:
     print('='*40)
@@ -13,7 +14,15 @@ while True:
           '\n4- Relatório final',
           '\n5- Sair')
     print('-'*40)
-    decisao = int(input('Digite o número da opção desejada: '))
+    try:
+        decisao = int(input('Digite o número da opção desejada: '))
+    except(ValueError):
+        print('Por favor digite um número válido da opção desejada (ex: 1,2,3).')
+
+        continue
+    except(KeyboardInterrupt):
+        break
+
     print('='*40)
 
     match(decisao):
@@ -107,9 +116,14 @@ while True:
                   f'Que {"vendeu" if len(maiorVolume) == 1 else "venderam"} {list(maiorVolume.values())[0]}',
                   f'{"unidade" if list(maiorVolume.values())[0] == 1 else "unidades"}.')
             print('-'*40)
-            print(f'{"O vendedor" if len(maiorReceita) == 1 else "Os vendedores"} com maior a maior receita ',
+            print(f'{"O vendedor" if len(maiorReceita) == 1 else "Os vendedores"} com a maior receita ',
                   f'{"foi" if len(maiorReceita) == 1 else "foram"}: {list(maiorReceita.keys())}.',
                   f'Que {"faturou" if len(maiorReceita) == 1 else "faturaram"} R$ {list(maiorReceita.values())[0]:.2f}')
+            print('-'*40)
+            print(f'{"O produto mais vendido" if len(maisVendido) == 1 else "Os produtos mais vendidos"}',
+                  f'{"foi" if len(maisVendido) == 1 else "foram"}: {list(maisVendido.keys())}.',
+                  f'Que {"vendeu" if len(maisVendido) == 1 else "venderam"} {list(maisVendido.values())[0]}',
+                  f'{"unidade" if list(maisVendido.values())[0] == 1 else "unidades"}.')
         case 5:
             break
         case _:

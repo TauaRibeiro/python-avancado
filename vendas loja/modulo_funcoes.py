@@ -12,6 +12,7 @@ def leitura_dados():
 
     return dados
 
+
 def intervalo_datas(analise, inicio, fim):
     analise = formatar_data(analise)
     inicio = formatar_data(inicio)
@@ -23,6 +24,7 @@ def intervalo_datas(analise, inicio, fim):
 
     
     return analise >= inicio and analise <= fim
+
 
 def formatar_data(data):
 
@@ -37,6 +39,7 @@ def formatar_data(data):
         nova_data[i] = int(nova_data[i])
     
     return nova_data
+
 
 def maior_volume(dados, data_inicio, data_fim):
     vendedor_vendas = dict()
@@ -66,6 +69,7 @@ def maior_volume(dados, data_inicio, data_fim):
     
     return resultado if len(resultado) > 0 else None
     
+
 def receita_total(dados, data_inicio, data_fim):
     data_inicio = formatar_data(data_inicio)
     data_fim = formatar_data(data_fim)
@@ -82,7 +86,8 @@ def receita_total(dados, data_inicio, data_fim):
             receita[vendedor] += valor_venda
     
     return receita if len(receita) > 0 else None
-# Consertar erro
+
+
 def mais_vendido(dados, data_inicio, data_fim):
     data_inicio = formatar_data(data_inicio)
     data_fim = formatar_data(data_fim)
@@ -111,6 +116,37 @@ def mais_vendido(dados, data_inicio, data_fim):
             resultado[produto] = quantidade
 
     return resultado if len(resultado) > 0 else None         
+
+
+def Validar_Data(data):
+    data = re.match(r'(\d+)/(\d+)/(\d+)', data)
+
+    dia = int(data.group(1))
+    mes = int(data.group(2))
+    ano = int(data.group(3))
+
+    if  mes < 1 and mes > 12:
+        return False
+    
+    if ano > datetime.date.today().year:
+        return False
+    
+    if dia < 1:
+        return False
+    
+    if mes in [1,5,7,8,10,12] and dia <= 31:
+        return True
+    elif mes in [4,6,9,11] and dia <= 30:
+        return True
+    else:
+        if ano % 400 == 0 and dia <= 29:
+            return True
+        elif dia <= 28:
+            return True
+    
+    return False
+    
+    
 
 # dados = [
 #     {'ID_VENDA': 0, 'Produto': 'Macarrão', 'Quantidade': 10, 'Preço_Unitário': 7.99, 'Data_Venda': '10/05/2003', 'Vendedor': 'Natan'},
