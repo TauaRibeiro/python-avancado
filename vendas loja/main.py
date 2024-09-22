@@ -3,7 +3,6 @@ import modulo_funcoes as md
 dados = md.leitura_dados()
 
 
-
 while True:
     print('='*40)
     print(f'{"MENU":^40}')
@@ -31,7 +30,7 @@ while True:
                 data_inicio = input('Digite a data de inicio no formata (dd/mm/aaaa): ')
                 data_fim = input('Digite a data final no formato (dd/mm/aaaa): ')
 
-                if re.search(r'(\d+)/(\d+)/(\d+)', data_inicio) != None and re.search(r'(\d+)/(\d+)/(\d+)', data_fim) != None:
+                if md.Validar_Data(data_inicio) and md.Validar_Data(data_fim):
                     break
                 
                 print('Data de início e/ou fim inválidas, por favor tente novamente...')
@@ -43,7 +42,7 @@ while True:
             else:
                 print('='*40)
 
-                print(f'Foi encontrado {len(resultado.keys())} {'correspondências' if len(resultado.keys()) != 1 else 'correspondência'}')
+                print(f'Foi encontrado {len(resultado.keys())} {"correspondências" if len(resultado.keys()) != 1 else "correspondência"}')
 
                 for vendedor, quantidade in resultado.items():
                     print('-'*40)
@@ -55,7 +54,7 @@ while True:
                 data_inicio = input('Digite a data de inicio no formata (dd/mm/aaaa): ')
                 data_fim = input('Digite a data final no formato (dd/mm/aaaa): ')
 
-                if re.search(r'(\d+)/(\d+)/(\d+)', data_inicio) != None and re.search(r'(\d+)/(\d+)/(\d+)', data_fim) != None:
+                if md.Validar_Data(data_inicio) and md.Validar_Data(data_fim):
                     break
                 
                 print('Data de início e/ou fim inválidas, por favor tente novamente...')
@@ -77,7 +76,7 @@ while True:
                 data_inicio = input('Digite a data de inicio no formata (dd/mm/aaaa): ')
                 data_fim = input('Digite a data final no formato (dd/mm/aaaa): ')
 
-                if re.search(r'(\d+)/(\d+)/(\d+)', data_inicio) != None and re.search(r'(\d+)/(\d+)/(\d+)', data_fim) != None:
+                if md.Validar_Data(data_inicio) and md.Validar_Data(data_fim):
                     break
                 
                 print('Data de início e/ou fim inválidas, por favor tente novamente...')
@@ -89,7 +88,7 @@ while True:
             else:
                 print('='*40)
 
-                print(f'Foi encontrado {len(resultado.keys())} {'correspondências' if len(resultado.keys()) != 1 else 'correspondência'}')
+                print(f'Foi encontrado {len(resultado.keys())} {"correspondências" if len(resultado.keys()) != 1 else "correspondência"}')
 
                 for vendedor, quantidade in resultado.items():
                     print('-'*40)
@@ -101,7 +100,7 @@ while True:
                 data_fim = input('Digite a data final no formato (dd/mm/aaaa): ')
                 print('-'*40)
 
-                if re.search(r'(\d+)/(\d+)/(\d+)', data_inicio) != None and re.search(r'(\d+)/(\d+)/(\d+)', data_fim) != None:
+                if md.Validar_Data(data_inicio) and md.Validar_Data(data_fim):
                     break
                 
                 print('Data de início e/ou fim inválidas, por favor tente novamente...')
@@ -111,19 +110,28 @@ while True:
             maiorReceita = md.receita_total(dados, data_inicio, data_fim)
             maisVendido = md.mais_vendido(dados, data_inicio, data_fim)
 
-            print(f'{"O vendedor" if len(maiorVolume) == 1 else "Os vendedores"} com maior volume de vendas ',
-                  f'{"foi" if len(maiorVolume) == 1 else "foram"}: {list(maiorVolume.keys())}.',
-                  f'Que {"vendeu" if len(maiorVolume) == 1 else "venderam"} {list(maiorVolume.values())[0]}',
-                  f'{"unidade" if list(maiorVolume.values())[0] == 1 else "unidades"}.')
+            if maiorVolume != None:
+                print(f'{"O vendedor" if len(maiorVolume) == 1 else "Os vendedores"} com maior volume de vendas ',
+                    f'{"foi" if len(maiorVolume) == 1 else "foram"}: {list(maiorVolume.keys())}.',
+                    f'Que {"vendeu" if len(maiorVolume) == 1 else "venderam"} {list(maiorVolume.values())[0]}',
+                    f'{"unidade" if list(maiorVolume.values())[0] == 1 else "unidades"}.')
+            else:
+                print('Nenhuma correspondência encontrada...')
             print('-'*40)
-            print(f'{"O vendedor" if len(maiorReceita) == 1 else "Os vendedores"} com a maior receita ',
-                  f'{"foi" if len(maiorReceita) == 1 else "foram"}: {list(maiorReceita.keys())}.',
-                  f'Que {"faturou" if len(maiorReceita) == 1 else "faturaram"} R$ {list(maiorReceita.values())[0]:.2f}')
+            if maiorReceita != None:
+                print(f'{"O vendedor" if len(maiorReceita) == 1 else "Os vendedores"} com a maior receita ',
+                    f'{"foi" if len(maiorReceita) == 1 else "foram"}: {list(maiorReceita.keys())}.',
+                    f'Que {"faturou" if len(maiorReceita) == 1 else "faturaram"} R$ {list(maiorReceita.values())[0]:.2f}')
+            else:
+                print('Nenhuma correspondência...')
             print('-'*40)
-            print(f'{"O produto mais vendido" if len(maisVendido) == 1 else "Os produtos mais vendidos"}',
-                  f'{"foi" if len(maisVendido) == 1 else "foram"}: {list(maisVendido.keys())}.',
-                  f'Que {"vendeu" if len(maisVendido) == 1 else "venderam"} {list(maisVendido.values())[0]}',
-                  f'{"unidade" if list(maisVendido.values())[0] == 1 else "unidades"}.')
+            if maisVendido != None:
+                print(f'{"O produto mais vendido" if len(maisVendido) == 1 else "Os produtos mais vendidos"}',
+                    f'{"foi" if len(maisVendido) == 1 else "foram"}: {list(maisVendido.keys())}.',
+                    f'Que {"vendeu" if len(maisVendido) == 1 else "venderam"} {list(maisVendido.values())[0]}',
+                    f'{"unidade" if list(maisVendido.values())[0] == 1 else "unidades"}.')
+            else:
+                print('Nenhuma correspondência encontrada...')
         case 5:
             break
         case _:

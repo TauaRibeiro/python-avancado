@@ -121,9 +121,12 @@ def mais_vendido(dados, data_inicio, data_fim):
 def Validar_Data(data):
     data = re.match(r'(\d+)/(\d+)/(\d+)', data)
 
-    dia = int(data.group(1))
-    mes = int(data.group(2))
-    ano = int(data.group(3))
+    try:
+        dia = int(data.group(1))
+        mes = int(data.group(2))
+        ano = int(data.group(3))
+    except AttributeError:
+        return False
 
     if  mes < 1 and mes > 12:
         return False
@@ -145,15 +148,4 @@ def Validar_Data(data):
             return True
     
     return False
-    
-    
-
-# dados = [
-#     {'ID_VENDA': 0, 'Produto': 'Macarrão', 'Quantidade': 10, 'Preço_Unitário': 7.99, 'Data_Venda': '10/05/2003', 'Vendedor': 'Natan'},
-#     {'ID_VENDA': 1, 'Produto': 'Sabão', 'Quantidade': 6, 'Preço_Unitário': 3.50, 'Data_Venda': '08/04/2005', 'Vendedor': 'João'},
-#     {'ID_VENDA': 2, 'Produto': 'Leite', 'Quantidade': 6, 'Preço_Unitário': 8, 'Data_Venda': '10/07/2023', 'Vendedor': 'Marcos'},
-#     {'ID_VENDA': 3, 'Produto': 'Biscoito', 'Quantidade': 5, 'Preço_Unitário': 7.50, 'Data_Venda': '10/06/2005', 'Vendedor': 'Natan'}
-# ]
-
-# print(receita_total(dados, '09/05/2003', '13/09/2024'))
 
