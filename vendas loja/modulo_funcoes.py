@@ -128,7 +128,7 @@ def Validar_Data(data):
     except AttributeError:
         return False
 
-    if  mes < 1 and mes > 12:
+    if  1 > mes > 12:
         return False
     
     if ano > datetime.date.today().year:
