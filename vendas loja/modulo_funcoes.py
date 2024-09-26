@@ -1,5 +1,4 @@
 import csv, datetime, re
-from collections import OrderedDict as od
 
 def leitura_dados():
     dados = list()
