@@ -71,6 +71,7 @@ while True:
                     print('-'*40)
                     print(f'VENDEDOR: {vendedor}',
                           f'\nRECEITA TOTAL: R$ {receita:.2f}')
+
         case 3:
             while True:
                 data_inicio = input('Digite a data de inicio no formata (dd/mm/aaaa): ')
@@ -94,6 +95,7 @@ while True:
                     print('-'*40)
                     print(f'PRODUTO: {vendedor}',
                           f'\nQUANTIDADE: {quantidade}')
+        
         case 4:
             while True:
                 data_inicio = input('Digite a data de inicio no formata (dd/mm/aaaa): ')
@@ -132,8 +134,10 @@ while True:
                     f'{"unidade" if list(maisVendido.values())[0] == 1 else "unidades"}.')
             else:
                 print('Nenhuma correspondência encontrada...')
+        
         case 5:
             break
+        
         case _:
             print('Opção inválida...')
         

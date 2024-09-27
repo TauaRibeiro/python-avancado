@@ -3,7 +3,6 @@ import re, datetime, json
 '''
 TODO
 - Finalizar a função de atualizar status
-- Criar uma função para procurar um determinado projeto baseado no nome ou id, talvez usar decorador para isso já que vou aplicar em funções.
 '''
 def validar_data(data) -> bool:
     data = re.match(r'(\d+)/(\d+)/(\d+)', data)
@@ -53,6 +52,21 @@ def carregar_dados(dados) -> None:
 
 
 def atualizar_status(dados) -> dict:
+    while(True):
+        print('-'*30)
+        achou = False
+        id_projeto = int(input('Digite o id do projeto: '))
+
+        for projeto in dados["projetos"]:
+            if id_projeto == projeto["id"]:
+                achou = True
+                break
+        
+        if achou:
+            break
+
+        print('Projeto não encontrado. Por favor tente novamente...')
+
     print('='*30)
     print('Para qual status deseja atualizar ?')
     print('-'*30)
@@ -64,7 +78,7 @@ def atualizar_status(dados) -> dict:
 
     match(decisao):
         case 1:
-            print()
+            
 
 
 dados = ler_dados()
