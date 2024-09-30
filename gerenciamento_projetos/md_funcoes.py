@@ -2,7 +2,14 @@ import re, datetime, json
 
 '''
 TODO
-- Finalizar a função de atualizar status
+- Calcule as horas totais trabalhadas por toda a equipe em cada projeto e o total de horas trabalhadas por cada membro individualmente.
+
+- Encontre o projeto com o maior orçamento e o projeto com a maior quantidade de horas totais trabalhadas.
+
+- Gere um relatório final com as seguintes informações:
+    O nome do projeto com o maior orçamento.
+    O nome do projeto com o maior número de horas totais trabalhadas.
+    A lista de membros que trabalharam em mais de um projeto e a quantidade total de horas trabalhadas por eles.
 '''
 def validar_data(data) -> bool:
     data = re.match(r'(\d+)/(\d+)/(\d+)', data)
@@ -47,7 +54,7 @@ def ler_dados() -> dict:
 
 
 def carregar_dados(dados) -> None:
-    with open('gerenciamento_projetos/informações projetos.json', 'w', encoding= 'utf-8') as arquivo:
+    with open('gerenciamento_projetos/informações projetos.json', 'w', encoding= 'UTF-8') as arquivo:
         json.dump(dados, arquivo, indent= 4)
 
 
@@ -67,18 +74,43 @@ def atualizar_status(dados) -> dict:
 
         print('Projeto não encontrado. Por favor tente novamente...')
 
-    print('='*30)
-    print('Para qual status deseja atualizar ?')
-    print('-'*30)
-    print('1- Em andamento\n',
-          '2- Concluído\n',
-          '3- Cancelado')
-    print('='*30)
-    decisao = int(input('Digite o número da opção desejada'))
+    while True:
+        print('='*30)
+        print('Para qual status deseja atualizar ?')
+        print('-'*30)
+        print('1- Em andamento',
+            '\n2- Concluído',
+            '\n3- Cancelado')
+        print('='*30)
+        decisao = int(input('Digite o número da opção desejada: '))
 
-    match(decisao):
-        case 1:
+        match(decisao):
+            case 1:
+                projeto["status"] = 'Em andamento'
+                break
+            case 2:
+                projeto["status"] = 'Concluído'
+                break
+            case 3:
+                projeto["status"] = 'Cancelado'
+                break
+            case _:
+                print('Opção inválida!! Por favor tente novamente...')
+    
+    return dados
             
+def calcular_horas(dados) -> dict:
+    resultado = dict()
 
+    for projeto in dados:
+        resultado[projeto["id"]] = dict()
+
+        for membro in projeto["equipe"]:
+            # A terminar
+            print()
 
 dados = ler_dados()
+
+dados = atualizar_status(dados)
+
+carregar_dados(dados)
