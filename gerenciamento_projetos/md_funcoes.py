@@ -98,19 +98,33 @@ def atualizar_status(dados) -> dict:
                 print('Opção inválida!! Por favor tente novamente...')
     
     return dados
-            
-def calcular_horas(dados) -> dict:
+
+
+def calcular_horas_projetos(dados) -> dict:
     resultado = dict()
 
-    for projeto in dados:
-        resultado[projeto["id"]] = dict()
+    for projeto in dados["projetos"]:
+        resultado[projeto["id"]] = 0
 
         for membro in projeto["equipe"]:
-            # A terminar
-            print()
+            resultado[projeto["id"]] += membro["horas_trabalhadas"]
+    
+    return resultado
+
+
+def calcular_horas_equipe(dados) -> dict:
+    resultado = dict()
+
+    for projeto in dados["projetos"]:
+        for membro in projeto["equipe"]:
+            if membro["nome"] in resultado.keys():
+                resultado[membro["nome"]] += membro["horas_trabalhadas"]
+            else:
+                resultado[membro["nome"]] = membro["horas_trabalhadas"]
+    
+    return resultado
+
 
 dados = ler_dados()
 
-dados = atualizar_status(dados)
-
-carregar_dados(dados)
+print(calcular_horas_equipe(dados))
