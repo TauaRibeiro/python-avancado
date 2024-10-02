@@ -2,16 +2,12 @@ import re, datetime, json
 
 '''
 TODO
-- Calcule as horas totais trabalhadas por toda a equipe em cada projeto e o total de horas trabalhadas por cada membro individualmente.
-
-- Encontre o projeto com o maior orçamento e o projeto com a maior quantidade de horas totais trabalhadas.
-
 - Gere um relatório final com as seguintes informações:
     O nome do projeto com o maior orçamento.
     O nome do projeto com o maior número de horas totais trabalhadas.
     A lista de membros que trabalharam em mais de um projeto e a quantidade total de horas trabalhadas por eles.
 '''
-def validar_data(data) -> bool:
+def validar_data(data: list[dict]) -> bool:
     data = re.match(r'(\d+)/(\d+)/(\d+)', data)
 
     try:
@@ -53,12 +49,12 @@ def ler_dados() -> dict:
     return dados
 
 
-def carregar_dados(dados) -> None:
+def carregar_dados(dados: list[dict]) -> None:
     with open('gerenciamento_projetos/informações projetos.json', 'w', encoding= 'UTF-8') as arquivo:
         json.dump(dados, arquivo, indent= 4)
 
 
-def atualizar_status(dados) -> dict:
+def atualizar_status(dados: list[dict]) -> dict:
     while(True):
         print('-'*30)
         achou = False
@@ -100,19 +96,19 @@ def atualizar_status(dados) -> dict:
     return dados
 
 
-def calcular_horas_projetos(dados) -> dict:
+def calcular_horas_projetos(dados: list[dict]) -> dict:
     resultado = dict()
 
     for projeto in dados["projetos"]:
-        resultado[projeto["id"]] = 0
+        resultado[projeto["nome"]] = 0
 
         for membro in projeto["equipe"]:
-            resultado[projeto["id"]] += membro["horas_trabalhadas"]
+            resultado[projeto["nome"]] += membro["horas_trabalhadas"]
     
     return resultado
 
 
-def calcular_horas_equipe(dados) -> dict:
+def calcular_horas_equipe(dados: list[dict]) -> dict:
     resultado = dict()
 
     for projeto in dados["projetos"]:
@@ -125,6 +121,44 @@ def calcular_horas_equipe(dados) -> dict:
     return resultado
 
 
-dados = ler_dados()
+def maior_orcamento(dados: list[dict]) -> dict:
+    maior: dict = None
+    for projeto in dados["projetos"]:
+        if maior == None or projeto["orcamento"] > maior["orcamento"]:
+            maior = projeto.copy()
 
-print(calcular_horas_equipe(dados))
+    return maior    
+
+
+def maior_quantidade_horas(dados: list[dict]) -> dict:
+    maior = dict()
+
+    dados = calcular_horas_projetos(dados)
+
+    for projeto, horas in dados.items():
+        if len(maior) == 0 or horas > list(maior.values())[0]:
+            maior.clear()
+            maior[projeto] = horas
+    
+    return maior 
+
+
+def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
+    resultado = dict()
+
+    for projeto in dados["projetos"]:
+        for funcionario in projeto["equipe"]:
+            if not funcionario in list(resultado.keys()):
+                resultado["funcionario"] = 1
+            else:
+                resultado["funcionario"] += 1
+    
+    resultado_filtrado = list(filter(lambda num_projetos: num_projetos > 1, list(resultado.values())))
+    
+    return resultado_filtrado
+
+
+if __name__ == '__main__':
+    dados = ler_dados()
+
+    print(trabalhou_multiplos_projetos(dados))
