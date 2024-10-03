@@ -7,7 +7,7 @@ TODO
     O nome do projeto com o maior número de horas totais trabalhadas.
     A lista de membros que trabalharam em mais de um projeto e a quantidade total de horas trabalhadas por eles.
 '''
-def validar_data(data: list[dict]) -> bool:
+def validar_data(data: str) -> bool:
     data = re.match(r'(\d+)/(\d+)/(\d+)', data)
 
     try:
@@ -145,18 +145,45 @@ def maior_quantidade_horas(dados: list[dict]) -> dict:
 
 def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
     resultado = dict()
+    resultado_filtrado = list()
 
     for projeto in dados["projetos"]:
         for funcionario in projeto["equipe"]:
-            if not funcionario in list(resultado.keys()):
-                resultado["funcionario"] = 1
+            if not funcionario["nome"] in list(resultado.keys()):
+                resultado[funcionario["nome"]] = 1
             else:
-                resultado["funcionario"] += 1
-    
-    resultado_filtrado = list(filter(lambda num_projetos: num_projetos > 1, list(resultado.values())))
+                resultado[funcionario["nome"]] += 1
+            
+                if resultado[funcionario["nome"]] > 1:
+                    resultado_filtrado.append(funcionario["nome"])
     
     return resultado_filtrado
 
+
+def cadastrar_projeto() -> bool:
+    novo_projeto = dict()
+    
+    novo_projeto["id"] = int(input('Digite o id do projeto: '))
+    novo_projeto["nome"] = input('Digite o nome do projeto: ')
+    novo_projeto["equipe"] = list()
+
+    integrante = dict()
+    num_integrantes = int(input('Digite o número de integrantes do projeto: '))
+    for n in range(1, num_integrantes+1):
+        # A continuar
+        integrante["nome"] = input(f'Digite o nome do {n}° funcionario: ')
+        integrante["cargo"] = input(f'Digite o cargo de \'{integrante["nome"]}\': ')
+        integrante["horas_trabalhadas"] = int(input(f'Digite as horas trabalhadas por \'{integrante["nome"]}\': '))
+        print('-'*30)
+
+    while(True):
+        print('Escolha o status do projeto:')
+        print('1- Em andamento',
+                '\n2- Concluído',
+                '\n3- Cancelado')
+        print('-'*30)
+        escolha = input('Digite o número da opção desejada: ')
+        
 
 if __name__ == '__main__':
     dados = ler_dados()
