@@ -160,7 +160,7 @@ def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
     return resultado_filtrado
 
 
-def cadastrar_projeto() -> bool:
+def cadastrar_projeto(dados: list[dict]) -> None:
     novo_projeto = dict()
     
     novo_projeto["id"] = int(input('Digite o id do projeto: '))
@@ -182,10 +182,44 @@ def cadastrar_projeto() -> bool:
                 '\n2- Concluído',
                 '\n3- Cancelado')
         print('-'*30)
-        escolha = input('Digite o número da opção desejada: ')
+        escolha = int(input('Digite o número da opção desejada: '))
+        match(escolha):
+            case 1:
+                novo_projeto["status"] = "Em andamento"
+                break
+            case 2:
+                novo_projeto["status"] = "Concluído"
+                break
+            case 3:
+                novo_projeto["status"] = "Cancelado"
+                break
+            case _:
+                print('Escolha inválida! Por favor tente novamente')
+
+    novo_projeto["orcamento"] = float(input("Digite o orçamento do projeto: R$ "))
+
+    while True:
+        novo_projeto["data_inicio"] = input("Digite a data de início do projeto (dd/mm/aaaa): ")
         
+        if validar_data(novo_projeto["data_inicio"]):
+            break
+
+        print('Data inválida! Por favor tente novamente.')
+
+    if novo_projeto["status"] == "Concluído" or novo_projeto["status"] == "Cancelado":
+        while True:
+            novo_projeto["data_fim"] = input('Digite a data de termino do projeto (dd/mm/aaaa):')
+
+            if validar_data(novo_projeto["data_fim"]):
+                break
+    else:
+        novo_projeto["data_fim"] = "null"
+        
+    dados["projetos"].append(novo_projeto)
+    
+    carregar_dados(dados)
 
 if __name__ == '__main__':
     dados = ler_dados()
 
-    print(trabalhou_multiplos_projetos(dados))
+    cadastrar_projeto(dados)
