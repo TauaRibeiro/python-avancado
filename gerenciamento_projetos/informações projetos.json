@@ -4,11 +4,23 @@
             "id": 1,
             "nome": "Projeto Alpha",
             "equipe": [
-                {"nome": "Ana", "cargo": "Gerente", "horas_trabalhadas": 120},
-                {"nome": "Carlos", "cargo": "Desenvolvedor", "horas_trabalhadas": 90},
-                {"nome": "João", "cargo": "Designer", "horas_trabalhadas": 60}
+                {
+                    "nome": "Ana",
+                    "cargo": "Gerente",
+                    "horas_trabalhadas": 120
+                },
+                {
+                    "nome": "Carlos",
+                    "cargo": "Desenvolvedor",
+                    "horas_trabalhadas": 90
+                },
+                {
+                    "nome": "Jo\u00e3o",
+                    "cargo": "Designer",
+                    "horas_trabalhadas": 60
+                }
             ],
-            "status": "Concluído",
+            "status": "Conclu\u00eddo",
             "orcamento": 50000,
             "data_inicio": "01/01/2023",
             "data_fim": "30/03/2023"
@@ -17,9 +29,21 @@
             "id": 2,
             "nome": "Projeto Beta",
             "equipe": [
-                {"nome": "Pedro", "cargo": "Gerente", "horas_trabalhadas": 100},
-                {"nome": "Mariana", "cargo": "Desenvolvedor", "horas_trabalhadas": 80},
-                {"nome": "Fernanda", "cargo": "Designer", "horas_trabalhadas": 70}
+                {
+                    "nome": "Pedro",
+                    "cargo": "Gerente",
+                    "horas_trabalhadas": 100
+                },
+                {
+                    "nome": "Mariana",
+                    "cargo": "Desenvolvedor",
+                    "horas_trabalhadas": 80
+                },
+                {
+                    "nome": "Fernanda",
+                    "cargo": "Designer",
+                    "horas_trabalhadas": 70
+                }
             ],
             "status": "Em andamento",
             "orcamento": 30000,

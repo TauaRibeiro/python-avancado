@@ -2,6 +2,8 @@ import re, datetime, json
 
 '''
 TODO
+- Criar uma fução de comparação de datas.
+- Criar um decorador de salvamento automático (Porque não pensei nisso antes...).
 - Gere um relatório final com as seguintes informações:
     O nome do projeto com o maior orçamento.
     O nome do projeto com o maior número de horas totais trabalhadas.
@@ -162,27 +164,59 @@ def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
 
 def cadastrar_projeto(dados: list[dict]) -> None:
     novo_projeto = dict()
+
     
-    novo_projeto["id"] = int(input('Digite o id do projeto: '))
+    while True:
+        invalido = False
+
+        novo_projeto["id"] = int(input('Digite o id do projeto: '))
+        print('-'*30)
+        
+        for d in dados["projetos"]:
+            if novo_projeto["id"] == int(d["id"]):
+                invalido = True
+                
+                break
+
+        if not invalido:
+            break
+
+        print('O id já existe no sistema!! Por favor tente novamente...')
+
     novo_projeto["nome"] = input('Digite o nome do projeto: ')
+    print('-'*30)
     novo_projeto["equipe"] = list()
 
     integrante = dict()
-    num_integrantes = int(input('Digite o número de integrantes do projeto: '))
+    while True:
+        num_integrantes = int(input('Digite o número de integrantes do projeto: '))
+
+        if num_integrantes > 0:
+            break
+
+        print('O projeto deve ter no mínimo um integrante.')
+
     for n in range(1, num_integrantes+1):
-        # A continuar
         integrante["nome"] = input(f'Digite o nome do {n}° funcionario: ')
         integrante["cargo"] = input(f'Digite o cargo de \'{integrante["nome"]}\': ')
         integrante["horas_trabalhadas"] = int(input(f'Digite as horas trabalhadas por \'{integrante["nome"]}\': '))
         print('-'*30)
 
+        novo_projeto["equipe"].append(integrante.copy())
+        integrante.clear()
+
     while(True):
-        print('Escolha o status do projeto:')
-        print('1- Em andamento',
-                '\n2- Concluído',
-                '\n3- Cancelado')
-        print('-'*30)
-        escolha = int(input('Digite o número da opção desejada: '))
+        try:
+            print('Escolha o status do projeto:')
+            print('1- Em andamento',
+                    '\n2- Concluído',
+                    '\n3- Cancelado')
+            print('-'*30)
+            escolha = int(input('Digite o número da opção desejada: '))
+        except ValueError:
+            print('Por favor digite o número de uma das opções (ex: 1): ')
+            continue
+
         match(escolha):
             case 1:
                 novo_projeto["status"] = "Em andamento"
@@ -195,8 +229,16 @@ def cadastrar_projeto(dados: list[dict]) -> None:
                 break
             case _:
                 print('Escolha inválida! Por favor tente novamente')
+    while True:
+        try:
+            novo_projeto["orcamento"] = float(input("Digite o orçamento do projeto: R$ ").replace(',', '.'))
+        except ValueError:
+            print('Por favor digite o valor do orçamento (ex: 1300)')
+        if novo_projeto["orcamento"] >= 0:
+            break
 
-    novo_projeto["orcamento"] = float(input("Digite o orçamento do projeto: R$ "))
+        print('Orçamento inválido! Deve ser um valor positivo...')
+            
 
     while True:
         novo_projeto["data_inicio"] = input("Digite a data de início do projeto (dd/mm/aaaa): ")
@@ -213,7 +255,7 @@ def cadastrar_projeto(dados: list[dict]) -> None:
             if validar_data(novo_projeto["data_fim"]):
                 break
     else:
-        novo_projeto["data_fim"] = "null"
+        novo_projeto["data_fim"] = None
         
     dados["projetos"].append(novo_projeto)
     
