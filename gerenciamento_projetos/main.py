@@ -1,7 +1,5 @@
 import md_funcoes as md
 
-dados_projeto = md.ler_dados()
-
 while True:
     print('='*30)
     print(f'{"MENU":^30}')
@@ -17,16 +15,23 @@ while True:
     print('='*30)
     match(escolha):
         case 1:
-            ...
+            md.cadastrar_projeto()
         case 2:
-            ...
+            md.atualizar_status()
         case 3:
-            ...
+            md.calcular_horas_projetos()
         case 4:
-            ...
+            md.calcular_horas_equipe()
         case 5:
+            maior_orcamento: dict = md.maior_orcamento()
+            maior_quantidade_horas: dict = md.maior_quantidade_horas()
+            print(f'O projeto com maior orçamento é {maior_orcamento["nome"]}. Com R$ {maior_orcamento["orcamento"]}')
+            print(f'O projeto com a maior quantidade de horas é {list(maior_quantidade_horas.keys())[0]}. Com',
+                  list(maior_quantidade_horas.values())[0])
+            # A TERMINAR
+            print(f'')
             ...
         case 6:
-            ...
+            break
         case _:
             print('Escolha inválida! Por favor tente novamente...')

@@ -49,6 +49,21 @@
             "orcamento": 30000,
             "data_inicio": "15/02/2023",
             "data_fim": null
+        },
+        {
+            "id": 3,
+            "nome": "Teste",
+            "equipe": [
+                {
+                    "nome": "Ana",
+                    "cargo": "Dev",
+                    "horas_trabalhadas": 200
+                }
+            ],
+            "status": "Cancelado",
+            "orcamento": 0.0,
+            "data_inicio": "05/06/2000",
+            "data_fim": "09/10/2024"
         }
     ]
 }

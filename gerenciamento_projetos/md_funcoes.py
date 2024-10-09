@@ -2,13 +2,45 @@ import re, datetime, json
 
 '''
 TODO
-- Criar uma fução de comparação de datas.
-- Criar um decorador de salvamento automático (Porque não pensei nisso antes...).
 - Gere um relatório final com as seguintes informações:
     O nome do projeto com o maior orçamento.
     O nome do projeto com o maior número de horas totais trabalhadas.
     A lista de membros que trabalharam em mais de um projeto e a quantidade total de horas trabalhadas por eles.
 '''
+def arquivo_dinamico(gravacao= False):
+    def decorador(funcao):
+        def funcao_decorada():
+            dados = ler_dados()
+
+            resultado = funcao(dados)
+
+            if gravacao:
+                carregar_dados(dados)
+
+            return resultado
+        return funcao_decorada
+    return decorador
+
+
+def e_maior(data1: str, data2: str) -> bool:
+    if validar_data(data1) and validar_data(data2):
+        data1 = re.match(r'(\d+)/(\d+)/(\d+)', data1)
+        data2 = re.match(r'(\d+)/(\d+)/(\d+)', data2)
+
+        if int(data1.group(3)) > int(data2.group(3)):
+            return True
+        elif int(data1.group(3)) == int(data2.group(3)):
+            if int(data1.group(2)) > int(data2.group(2)):
+                return True
+            elif int(data1.group(2)) == int(data2.group(2)):
+                if int(data1.group(1)) > int(data2.group(1)):
+                    return True
+       
+        return False
+    
+    raise ValueError('Data(as) inválidas!!')
+
+
 def validar_data(data: str) -> bool:
     data = re.match(r'(\d+)/(\d+)/(\d+)', data)
 
@@ -55,7 +87,7 @@ def carregar_dados(dados: list[dict]) -> None:
     with open('gerenciamento_projetos/informações projetos.json', 'w', encoding= 'UTF-8') as arquivo:
         json.dump(dados, arquivo, indent= 4)
 
-
+@arquivo_dinamico(gravacao=True)
 def atualizar_status(dados: list[dict]) -> dict:
     while(True):
         print('-'*30)
@@ -85,19 +117,39 @@ def atualizar_status(dados: list[dict]) -> dict:
         match(decisao):
             case 1:
                 projeto["status"] = 'Em andamento'
+
+                projeto["data_fim"] = None
+
                 break
             case 2:
                 projeto["status"] = 'Concluído'
+
+                while True:
+                    projeto["data_fim"] = input('Digite a data de termino do projeto (dd/mm/aaaa):')
+
+                    if e_maior(projeto["data_fim"], projeto["data_inicio"]) or projeto["data_fim"] == projeto["data_inicio"]:
+                        break
+                    
+                    print('Data inválida!! Por favor tent novamente...')
                 break
             case 3:
                 projeto["status"] = 'Cancelado'
+
+                while True:
+                    projeto["data_fim"] = input('Digite a data de termino do projeto (dd/mm/aaaa):')
+
+                    if e_maior(projeto["data_fim"], projeto["data_inicio"]) or projeto["data_fim"] == projeto["data_inicio"]:
+                        break
+                    
+                    print('Data inválida!! Por favor tent novamente...')
+
                 break
             case _:
                 print('Opção inválida!! Por favor tente novamente...')
     
     return dados
 
-
+@arquivo_dinamico
 def calcular_horas_projetos(dados: list[dict]) -> dict:
     resultado = dict()
 
@@ -109,7 +161,7 @@ def calcular_horas_projetos(dados: list[dict]) -> dict:
     
     return resultado
 
-
+@arquivo_dinamico
 def calcular_horas_equipe(dados: list[dict]) -> dict:
     resultado = dict()
 
@@ -122,7 +174,7 @@ def calcular_horas_equipe(dados: list[dict]) -> dict:
     
     return resultado
 
-
+@arquivo_dinamico
 def maior_orcamento(dados: list[dict]) -> dict:
     maior: dict = None
     for projeto in dados["projetos"]:
@@ -131,7 +183,7 @@ def maior_orcamento(dados: list[dict]) -> dict:
 
     return maior    
 
-
+@arquivo_dinamico
 def maior_quantidade_horas(dados: list[dict]) -> dict:
     maior = dict()
 
@@ -144,7 +196,7 @@ def maior_quantidade_horas(dados: list[dict]) -> dict:
     
     return maior 
 
-
+@arquivo_dinamico
 def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
     resultado = dict()
     resultado_filtrado = list()
@@ -161,7 +213,7 @@ def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
     
     return resultado_filtrado
 
-
+@arquivo_dinamico(gravacao=True)
 def cadastrar_projeto(dados: list[dict]) -> None:
     novo_projeto = dict()
 
@@ -213,6 +265,7 @@ def cadastrar_projeto(dados: list[dict]) -> None:
                     '\n3- Cancelado')
             print('-'*30)
             escolha = int(input('Digite o número da opção desejada: '))
+            print('-'*30)
         except ValueError:
             print('Por favor digite o número de uma das opções (ex: 1): ')
             continue
@@ -232,6 +285,7 @@ def cadastrar_projeto(dados: list[dict]) -> None:
     while True:
         try:
             novo_projeto["orcamento"] = float(input("Digite o orçamento do projeto: R$ ").replace(',', '.'))
+            print('-'*30)
         except ValueError:
             print('Por favor digite o valor do orçamento (ex: 1300)')
         if novo_projeto["orcamento"] >= 0:
@@ -246,22 +300,23 @@ def cadastrar_projeto(dados: list[dict]) -> None:
         if validar_data(novo_projeto["data_inicio"]):
             break
 
-        print('Data inválida! Por favor tente novamente.')
+        print('Data inválida! Por favor tente novamente...')
 
     if novo_projeto["status"] == "Concluído" or novo_projeto["status"] == "Cancelado":
         while True:
             novo_projeto["data_fim"] = input('Digite a data de termino do projeto (dd/mm/aaaa):')
 
-            if validar_data(novo_projeto["data_fim"]):
+            if e_maior(novo_projeto["data_fim"], novo_projeto["data_inicio"]) or novo_projeto["data_fim"] == novo_projeto["data_inicio"]:
                 break
+            
+            print('Data inválida!! Por favor tent novamente...')
     else:
         novo_projeto["data_fim"] = None
         
     dados["projetos"].append(novo_projeto)
-    
-    carregar_dados(dados)
+
 
 if __name__ == '__main__':
     dados = ler_dados()
 
-    cadastrar_projeto(dados)
+    print(trabalhou_multiplos_projetos(dados))
