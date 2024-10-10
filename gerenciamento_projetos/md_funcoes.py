@@ -1,12 +1,5 @@
 import re, datetime, json
 
-'''
-TODO
-- Gere um relatório final com as seguintes informações:
-    O nome do projeto com o maior orçamento.
-    O nome do projeto com o maior número de horas totais trabalhadas.
-    A lista de membros que trabalharam em mais de um projeto e a quantidade total de horas trabalhadas por eles.
-'''
 def arquivo_dinamico(gravacao= False):
     def decorador(funcao):
         def funcao_decorada():
@@ -147,9 +140,10 @@ def atualizar_status(dados: list[dict]) -> dict:
             case _:
                 print('Opção inválida!! Por favor tente novamente...')
     
+    print('Status atualizado com sucesso!!')
     return dados
 
-@arquivo_dinamico
+@arquivo_dinamico()
 def calcular_horas_projetos(dados: list[dict]) -> dict:
     resultado = dict()
 
@@ -161,7 +155,7 @@ def calcular_horas_projetos(dados: list[dict]) -> dict:
     
     return resultado
 
-@arquivo_dinamico
+@arquivo_dinamico()
 def calcular_horas_equipe(dados: list[dict]) -> dict:
     resultado = dict()
 
@@ -174,7 +168,7 @@ def calcular_horas_equipe(dados: list[dict]) -> dict:
     
     return resultado
 
-@arquivo_dinamico
+@arquivo_dinamico()
 def maior_orcamento(dados: list[dict]) -> dict:
     maior: dict = None
     for projeto in dados["projetos"]:
@@ -183,11 +177,11 @@ def maior_orcamento(dados: list[dict]) -> dict:
 
     return maior    
 
-@arquivo_dinamico
+@arquivo_dinamico()
 def maior_quantidade_horas(dados: list[dict]) -> dict:
     maior = dict()
 
-    dados = calcular_horas_projetos(dados)
+    dados = calcular_horas_projetos()
 
     for projeto, horas in dados.items():
         if len(maior) == 0 or horas > list(maior.values())[0]:
@@ -196,7 +190,7 @@ def maior_quantidade_horas(dados: list[dict]) -> dict:
     
     return maior 
 
-@arquivo_dinamico
+@arquivo_dinamico()
 def trabalhou_multiplos_projetos(dados: list[dict]) -> list:
     resultado = dict()
     resultado_filtrado = list()
@@ -314,6 +308,8 @@ def cadastrar_projeto(dados: list[dict]) -> None:
         novo_projeto["data_fim"] = None
         
     dados["projetos"].append(novo_projeto)
+
+    print('Cadastro realizado com sucesso!!')
 
 
 if __name__ == '__main__':

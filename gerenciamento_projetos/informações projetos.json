@@ -56,14 +56,24 @@
             "equipe": [
                 {
                     "nome": "Ana",
-                    "cargo": "Dev",
-                    "horas_trabalhadas": 200
+                    "cargo": "Gerente",
+                    "horas_trabalhadas": 280
+                },
+                {
+                    "nome": "J\u00falia",
+                    "cargo": "Desenvolvedora",
+                    "horas_trabalhadas": 300
+                },
+                {
+                    "nome": "Carlos",
+                    "cargo": "Designer",
+                    "horas_trabalhadas": 180
                 }
             ],
-            "status": "Cancelado",
-            "orcamento": 0.0,
-            "data_inicio": "05/06/2000",
-            "data_fim": "09/10/2024"
+            "status": "Em andamento",
+            "orcamento": 5000.0,
+            "data_inicio": "10/06/2005",
+            "data_fim": null
         }
     ]
 }
