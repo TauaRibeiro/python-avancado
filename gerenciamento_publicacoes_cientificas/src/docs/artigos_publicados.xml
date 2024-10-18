@@ -1,0 +1,34 @@
+<conferencia>
+    <artigo id="1">
+        <titulo>Aprendizado de Máquina em Redes Neurais</titulo>
+        <autores>
+            <autor>
+                <nome>Ana Souza</nome>
+                <instituicao>Universidade A</instituicao>
+            </autor>
+            <autor>
+                <nome>Carlos Silva</nome>
+                <instituicao>Universidade B</instituicao>
+            </autor>
+        </autores>
+        <ano_publicacao>2021</ano_publicacao>
+        <palavras_chave>
+            <palavra>redes neurais</palavra>
+            <palavra>aprendizado de máquina</palavra>
+        </palavras_chave>
+    </artigo>
+    <artigo id="2">
+        <titulo>Visão Computacional para Diagnóstico Médico</titulo>
+        <autores>
+            <autor>
+                <nome>João Lima</nome>
+                <instituicao>Universidade C</instituicao>
+            </autor>
+        </autores>
+        <ano_publicacao>2022</ano_publicacao>
+        <palavras_chave>
+            <palavra>visão computacional</palavra>
+            <palavra>diagnóstico médico</palavra>
+        </palavras_chave>
+    </artigo>
+</conferencia>
