@@ -1,5 +1,5 @@
 class Autor:
-    lista_autores = list()
+    _lista_autores = list()
 
     def __init__(self, nome: str, instituicao) -> None:
         self._nome = nome
@@ -13,10 +13,12 @@ class Autor:
     @property
     def nome(self) -> str:
         return self._nome
-    
+
+
     @property
     def instituicao(self) -> str:
         return self._instituicao
+
 
     @nome.setter
     def nome(self, nome: str) -> None:
@@ -32,50 +34,51 @@ class Autor:
             self._instituicao = instituicao
         else:
             raise ValueError('Nome da instituição possui menos de 3 caracteres')
-    
+
+
     @staticmethod
-    def cadastrarAutor(autor) -> bool:
-        if len(autor._nome) < 3 or len(autor._instituicao) < 3:
-            return False
-        
-        Autor.lista_autores.append(autor)
-        return True
-    
+    def cadastrarAutor(autor) -> None:
+        Autor._lista_autores.append(autor)
+
 
     @staticmethod
     def mostrarAutores() -> str:
-        if len(Autor.lista_autores) == 0:
+        if Autor.estaVazia():
             return 'Não há autores cadastrados'
         
         resultado = []
 
-        for autor in Autor.lista_autores:
+        for autor in Autor._lista_autores:
             resultado.append(str(autor))
         
         return ''.join(resultado)
-    
+
 
     @staticmethod
-    def editarAutor(indice_autor: int, autor_editado) -> bool:
-        if len(autor_editado._nome) < 3 or len(autor_editado._instituicao) < 3:
-            return False
+    def editarAutor(indice_autor: int, autor_editado) -> None:
+        if autor_editado._nome == None:
+            autor_editado._nome = Autor._lista_autores[indice_autor]._nome
+
+        if autor_editado._instituicao == None:
+            autor_editado._instituicao = Autor._lista_autores[indice_autor]._instituicao
+
         
-        Autor.lista_autores[indice_autor] = autor_editado
-        return True
-        
+        Autor._lista_autores[indice_autor] = autor_editado
+
 
     @staticmethod
     def excluirAutor(indice_autor) -> None:
-        Autor.lista_autores.remove(indice_autor)
-        
+        Autor._lista_autores.remove(indice_autor)
+
+
     @staticmethod
-    def cadastrouAutor() -> bool:
-        if len(Autor.lista_autores) == 0:
-            return False
-        return True
+    def estaVazia() -> bool:
+        if len(Autor._lista_autores) == 0:
+            return True
+        return False
         
 
-
+# Parte para testes da classe Autor, simulando a interação de um usuário. Além de ajudar na construção da interface principal.
 if __name__ == '__main__':
     while True:
         print('='*30)
@@ -90,31 +93,26 @@ if __name__ == '__main__':
 
         match(decisao):
             case 1:
-                
-                while True: 
-                    novo_autor = Autor('Nome', 'Instituição')
-                        
-                    while True:
-                        if novo_autor.nome == 'Nome':
-                            try:
-                                novo_autor.nome = input('Digite o nome do autor: ')
-                            except ValueError:
-                                print('Nome inválido!! Deve ter no mínimo 3 caracteres.')
-                                print('Por favor, tente novamente...')
-                                
-                                continue
-                        
+                novo_autor = Autor(None, None)
+                    
+                while novo_autor.nome == None or novo_autor.instituicao == None:
+                    if novo_autor.nome == None:
                         try:
-                            novo_autor.instituicao = input('Digite o nome da instituição: ')
+                            print('-'*30)
+                            novo_autor.nome = input('Digite o nome do autor: ')
                         except ValueError:
                             print('Nome inválido!! Deve ter no mínimo 3 caracteres.')
                             print('Por favor, tente novamente...')
                             
                             continue
-                        
-                        break
                     
-                    break
+                    try:
+                        print('-'*30)
+                        novo_autor.instituicao = input('Digite o nome da instituição: ')
+                    except ValueError:
+                        print('Nome inválido!! Deve ter no mínimo 3 caracteres.')
+                        print('Por favor, tente novamente...')
+                        
 
                 Autor.cadastrarAutor(novo_autor)
     
@@ -122,13 +120,13 @@ if __name__ == '__main__':
                 print(Autor.mostrarAutores())
             
             case 3:
-                if not Autor.cadastrouAutor():
+                if Autor.estaVazia():
                     print('Não há autores cadastrados...')
                     continue
                     
-                autor_editado = Autor('Nome', 'Instituição')
+                autor_editado = Autor(None, None)
                 
-                for indice, autor in enumerate(Autor.lista_autores):
+                for indice, autor in enumerate(Autor._lista_autores):
                     print(f'{indice+1}- {autor.nome}')
 
                 print('-'*30)
@@ -146,23 +144,36 @@ if __name__ == '__main__':
                         print('Escolha inválida!! Por favor tente novamente')
                         continue
                     
-                    # Alterar o método editar no
+                    break
                     
-                    # while True:
-                    #     if novo_autor.nome == 'Nome':
-                    #         if '1' in editar:
-                    #             try:
-                    #                 novo_autor.nome = input('Digite o nome do autor: ')
-                    #             except ValueError:
-                    #                 print('Nome inválido!! Por favor tente novamente...')
-                    #                 continue
-                    #         else:
-                    #             novo_autor.nome = Autor.lista_autores[indice].nome
-                    #     if novo_autor.instituicao == 'Instituição' and '':
-                                   
+                while True:
+                    if '1' in editar and autor_editado.nome == None:
+                        try:
+                            print('-'*30)
+                            autor_editado.nome = input('Digite o novo nome do autor: ')
+                        except ValueError:
+                            print('Nome inválido! Por favor tente novamente...')
+                            
+                            continue
+                    
+                    if '2' in editar:
+                        try:
+                            print('-'*30)
+                            autor_editado.instituicao = input('Digite a nova instituição do autor: ')
+                        except ValueError:
+                            print('Institução inválida!! Por favor tente novamente...')
+                            
+                            continue
+
+                    break
+                Autor.editarAutor(decisao, autor_editado)                                   
             
+            # A ser testando, após teste ser feito, começar a 
             case 4:
-                ...
+                if Autor.estaVazia():
+                    print('Não há autores cadastrados...')
+
+                    continue
             
             case 5:
                 break
