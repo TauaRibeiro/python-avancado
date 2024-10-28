@@ -68,7 +68,7 @@ class Autor:
 
     @staticmethod
     def excluirAutor(indice_autor) -> None:
-        Autor._lista_autores.remove(indice_autor)
+        Autor._lista_autores.pop(indice_autor)
 
 
     @staticmethod
@@ -168,13 +168,19 @@ if __name__ == '__main__':
                     break
                 Autor.editarAutor(decisao, autor_editado)                                   
             
-            # A ser testando, após teste ser feito, começar a 
             case 4:
                 if Autor.estaVazia():
                     print('Não há autores cadastrados...')
 
                     continue
-            
+
+                for indice, autor in enumerate(Autor._lista_autores):
+                    print(f'{indice+1}- {autor.nome}')
+                print('-'*30)
+                indice = int(input('Digite o indice do autor a ser excluido: '))-1
+
+                Autor.excluirAutor(indice)
+
             case 5:
                 break
             
