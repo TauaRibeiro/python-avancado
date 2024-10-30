@@ -1,4 +1,5 @@
 from datetime import date
+from Autor import Autor # Passar a nomear os arquivos de classes como classe_<nome classe>
 
 '''
 Voltar a mexer aqui após ter terminado a classe Autor.
@@ -8,7 +9,7 @@ class Artigo:
     _lista_artigos = list()
 
 
-    def __init__(self, titulo: str, autores: list, ano_publicacao: int, palavras_chave: list[str]) -> None:
+    def __init__(self, titulo: str= None, autores: list = [], ano_publicacao: int= None, palavras_chave: list[str]= []) -> None:
 
         self._titulo = titulo
         self._autores = autores
@@ -20,7 +21,7 @@ class Artigo:
         while not valido:
             valido = True
             for artigo in Artigo.lista_artigos:
-                if Artigo._GERADOR_ID == artigo.id:
+                if Artigo._GERADOR_ID == artigo._id:
                     valido = False
                     break
             
@@ -29,84 +30,48 @@ class Artigo:
 
             Artigo._GERADOR_ID += 1
 
-
-    def __repr__(self):
-        return f'Id: {self._id},Titulo: {self._titulo}, Autores: {self._autores}, Ano_publicação: {self._ano_publicacao}, palavras chaves: {self._palavras_chaves}'
-
-    # A substituir o campo do autor para suportar o objeto em si
-    def __str__(self):
-        texto_artigo = []
-
-        texto_artigo.append(f'TÍTULO: {self._titulo}\n{"AUTOR" if len(self._autores) == 1 else "AUTORES"}:\n')
-        
-        for autor in self._autores:
-            texto_artigo.append(f'\tNOME: {autor[0]}\n\tINSTITUIÇÃO: {autor[1]}\n\n')
-
-        texto_artigo.append(f'ANO PUBLICAÇÃO: {self._ano_publicacao}\n{"PALAVRA" if len(self._palavras_chave) == 1 else "PALAVRAS"} CHAVE:')
-        
-        for palavra_chave in self._palavras_chave:
-            texto_artigo.append(f'{palavra_chave}')
-
-            if palavra_chave != self._palavras_chave[-1]:
-                texto_artigo.append(', ')
-
-        return ''.join(texto_artigo)
-
-
-    def setTitulo(self, titulo: str) -> bool:
-        if len(titulo) >= 4:
-            self._titulo = titulo
-            return True
-
-        return False
-    
-    # A substituir o campo do autor para suportar o objeto em si
-    def setAutores(self, autores: list) -> bool:
-        if len(autores) == 0:
-            return False
-
-        for autor in autores:
-            if len(autor[0]) < 3 or len(autor[1]) < 3:
-                return False
-
-        self._autores = autores[:]
-        return True
-    
-
-    def setAnoPublicacao(self, ano: int) -> bool:
-        if ano > date.today().year:
-            return False
-        
-        self._ano_publicacao = ano
-        return True
-
-
-    def setPalavrasChave(self, palavras_chave: list[str]) -> bool:
-        if len(palavras_chave) == 0:
-            return False
-        
-        for palavra in palavras_chave:
-            if len(palavra) < 4:
-                return False
-            
-        self._palavras_chave = palavras_chave[:]
-    
-
-    def getTitulo(self) -> str:
+    @property
+    def titulo(self) -> str:
         return self._titulo
     
-    # A substituir o campo do autor para suportar o objeto em si
-    def getAutores(self) -> list:
-        return self._autores[:]
-    
+    @titulo.setter
+    def titulo(self, titulo: str) -> None:
+        if len(titulo) < 3:
+            raise ValueError('O nome do título não pode ser menor que 3 caracteres...')
 
-    def getAnoPublicacao(self) -> int:
+        self._titulo = titulo
+
+    @property
+    def autores(self) -> list[Autor]:
+        return self._autores
+    
+    @autores.setter
+    def autores(self, lista_autores: list[Autor]) -> None:
+        if len(lista_autores) == 0:
+            raise ValueError('Não é possível cadastrar um artigo sem autores...')
+        
+    @property
+    def ano_publicacao(self) -> int:
         return self._ano_publicacao
     
+    @ano_publicacao.setter
+    def ano_publicacao(self, ano: int) -> None:
+        if ano > date.today().year:
+            raise ValueError('Não é possível publicar um artigo de um ano que ainda não existe...')
+        if ano < 0:
+            raise ValueError('Não existe anos negativos...')
 
-    def getPalavrasChave(self) -> list[str]:
-        return self._palavras_chaves[:]
+        self._ano_publicacao = ano
 
+    @property
+    def palavras_chave(self) -> list[str]:
+        return self._palavras_chave
+    
+    @palavras_chave.setter
+    def palavras_chave(self, lista_palavras: list[str]) -> None:
+        if len(lista_palavras) == 0:
+            raise ValueError('O artigo deve ter no mínimo uma palavra chave')
+        
 
     @staticmethod
     def cadastrarArtigo(artigo) -> bool:
@@ -164,13 +129,57 @@ class Artigo:
 
 
 
-
 if __name__ == '__main__':
-    artigo1 = Artigo("olá mundo", ["Teste 1", "Teste 2"], 2024, ["olá", "mundo"])
-    artigo2 = Artigo("olá mundo", ["Teste 1", "Teste 2"], 2024, ["olá", "mundo"])
-    artigo3 = Artigo("olá mundo", ["Teste 1", "Teste 2"], 2024, ["olá", "mundo"])
+    autor1 = Autor('Autor 1', 'Instituição 1')
+    autor2 = Autor('Autor 2', 'Instituição 2')
+    autor3 = Autor('Autor 3', 'Instituição 3')
+    autor4 = Autor('Autor 4', 'Instituição 4')
 
-    print(artigo1.__repr__)
-    print(artigo2.__repr__)
-    print(artigo3.__repr__)
-    print(artigo3.__repr__)
+    Autor.cadastrarAutor(autor1)
+    Autor.cadastrarAutor(autor2)
+    Autor.cadastrarAutor(autor3)
+    Autor.cadastrarAutor(autor4)
+    while True:
+        print('='*30)
+        print('1- Cadastrar',
+              '\n2- Mostrar artigos',
+              '\n3- Atualizar artigos',
+              '\n4- Excluir artigo',
+              '\n5- Finalizar')
+        print('-'*30)
+        decisao = int(input('Digite o número da opção desejada: '))
+        print('='*30)
+
+        match(decisao):
+            case 1:
+                novo_artigo = Artigo()
+
+                if novo_artigo.titulo is None:
+                    try:
+                        print('-'*30)
+                        novo_artigo.titulo = input('Digite o título do artigo: ')
+                    except:
+                        print('Título inválido! O título deve conter no mínimo 3 caracteres...')
+                        continue
+                
+                elif novo_artigo._autores is []:
+                    print('-'*30)
+                    for indice, autor in enumerate(Autor._lista_autores):
+                        print(f'{indice+1}- {autor.nome}')
+
+                    print('-'*30)
+                    decisao = int(input('Digite o número da opção desejada: '))-1
+
+                    
+                ...
+            case 2:
+                ...
+            case 3:
+                ...
+            case 4:
+                ...
+            case 5:
+                ...
+            case _:
+                ...
+
