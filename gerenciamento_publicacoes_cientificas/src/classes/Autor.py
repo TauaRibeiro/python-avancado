@@ -77,6 +77,21 @@ class Autor:
             return True
         return False
         
+    # A terminar
+    @staticmethod
+    def obterAutores(*indices_autores: list[int]) -> list:
+        resultado = []
+
+        for indice in indices_autores:
+            if not Autor._lista_autores[indice] in resultado:
+                try:
+                    resultado.append(Autor._lista_autores[indice])
+                except IndexError:
+                    continue
+            
+                
+
+            
 
 # Parte para testes da classe Autor, simulando a interação de um usuário. Além de ajudar na construção da interface principal.
 if __name__ == '__main__':
