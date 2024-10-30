@@ -38,17 +38,16 @@ class Arvore():
             else:
                 self._inserirRecursivo(no.direita, valor)
 
-            
-    
+
     def emOrdem(self) -> None:
         if self.raiz == None:
             print('Árvore vazia...')
             
             return
         
-        self._emOrdem(self.raiz)
+        self._emOrdemRecursivo(self.raiz)
 
-    def _emOrdem(self, no:No) -> None:
+    def _emOrdemRecursivo(self, no:No) -> None:
         if no == None:
             return
         
@@ -72,16 +71,36 @@ class Arvore():
         elif valor > no_atual.valor:
             self._excluirRecursivo(valor, no_atual.direita, no_atual)
 
+        # Excluir raiz
         elif no_atual is self.raiz:
-            self.raiz =  no_atual.direita if not no_atual.direita is None else no_atual.esquerda
+            no_sucessor = no_atual.direita if not no_atual.direita is None else no_atual.esquerda
+            no_pai_sucessor = self.raiz
 
+            while not no_sucessor.direita is None or not no_sucessor.esquerda is None:
+                no_pai_sucessor = no_sucessor
+                if not no_sucessor.esquerda is None:
+                    no_sucessor = no_sucessor.esquerda
+                else:
+                    no_sucessor = no_sucessor.direita
+
+
+            if no_pai_sucessor.direita is no_sucessor:
+                no_pai_sucessor.direita = None
+            else:
+                no_pai_sucessor.esquerda = None
+
+            no_sucessor.direita = self.raiz.direita
+            no_sucessor.esquerda = self.raiz.esquerda
+            self.raiz = no_sucessor
+        
+        # Excluir folha
         elif no_atual.direita is None and no_atual.esquerda is None:
             if no_anterior.esquerda is no_atual:
                 no_anterior.esquerda = None
             else:
                 no_anterior.direita = None
 
-
+        # Excluir no com dois filhos
         elif not no_atual.direita is None and not no_atual.esquerda is None:
             no_sucessor = no_atual.direita
             no_pai_sucessor = no_atual
@@ -102,7 +121,8 @@ class Arvore():
                 no_anterior.direita = no_sucessor
             else:
                 no_anterior.esquerda = no_sucessor
-
+        
+        # Excluir no com um filho
         else:
             if no_anterior.direita is no_atual:
                 no_anterior.direita = no_atual.direita if not no_atual.direita is None else no_atual.esquerda
@@ -118,6 +138,7 @@ arvore.inserir(500)
 arvore.inserir(0)
 arvore.inserir(1000)
 arvore.inserir(-100)
+arvore.inserir(-50)
 arvore.inserir(100)
 arvore.inserir(900)
 arvore.inserir(1100)
@@ -131,6 +152,7 @@ arvore.inserir(1150)
 
 arvore.emOrdem()
 print('-'*30)
+arvore.excluir(750)
 arvore.excluir(500)
 
 arvore.emOrdem()
