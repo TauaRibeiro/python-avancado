@@ -50,6 +50,8 @@ class Artigo:
         if len(lista_autores) == 0:
             raise ValueError('Não é possível cadastrar um artigo sem autores...')
         
+        self._autores = lista_autores[:]
+        
     @property
     def ano_publicacao(self) -> int:
         return self._ano_publicacao
@@ -57,9 +59,9 @@ class Artigo:
     @ano_publicacao.setter
     def ano_publicacao(self, ano: int) -> None:
         if ano > date.today().year:
-            raise ValueError('Não é possível publicar um artigo de um ano que ainda não existe...')
+            raise ValueError('Não é possível publicar um artigo de um ano que ainda não existe.')
         if ano < 0:
-            raise ValueError('Não existe anos negativos...')
+            raise ValueError('Não é possível cadastrar um ano negativo.')
 
         self._ano_publicacao = ano
 
@@ -71,6 +73,8 @@ class Artigo:
     def palavras_chave(self, lista_palavras: list[str]) -> None:
         if len(lista_palavras) == 0:
             raise ValueError('O artigo deve ter no mínimo uma palavra chave')
+        
+        self._palavras_chave = lista_palavras[:]
         
 
     @staticmethod
@@ -140,6 +144,7 @@ if __name__ == '__main__':
     Autor.cadastrarAutor(autor3)
     Autor.cadastrarAutor(autor4)
     while True:
+
         print('='*30)
         print('1- Cadastrar',
               '\n2- Mostrar artigos',
@@ -153,23 +158,47 @@ if __name__ == '__main__':
         match(decisao):
             case 1:
                 novo_artigo = Artigo()
-
-                if novo_artigo.titulo is None:
-                    try:
-                        print('-'*30)
-                        novo_artigo.titulo = input('Digite o título do artigo: ')
-                    except:
-                        print('Título inválido! O título deve conter no mínimo 3 caracteres...')
-                        continue
                 
-                elif novo_artigo._autores is []:
-                    print('-'*30)
-                    for indice, autor in enumerate(Autor._lista_autores):
-                        print(f'{indice+1}- {autor.nome}')
+                while True:
+                    if novo_artigo.titulo is None:
+                        try:
+                            print('-'*30)
+                            novo_artigo.titulo = input('Digite o título do artigo: ')
+                        except:
+                            print('Título inválido! O título deve conter no mínimo 3 caracteres...')
+                            continue
+                    
+                    if novo_artigo._autores is []:
+                        print('-'*30)
+                        for indice, autor in enumerate(Autor.lista_autores):
+                            print(f'{indice+1}- {autor.nome}')
 
-                    print('-'*30)
-                    decisao = int(input('Digite o número da opção desejada: '))-1
+                        print('-'*30)
+                        decisao = input('Digite os números das opções desejadas ex(1; 1,2,3): ').replace(' ', '').split(',')
+                        try:
+                            decisao = [int(x)-1 for x in decisao]
+                        except Exception as erro:
+                            print(f'O erro foi -> {erro.__class__}')
+                            continue
+                        
+                        if len(decisao) == 0:
+                            print('O artigo deve ter no mínimo 1 autor!')
+                            continue
 
+                        novo_artigo.autores = Autor.obterAutores(decisao)
+                    
+                    if novo_artigo.ano_publicacao is None:
+                        print('-'*30)
+                        try:
+                            novo_artigo.ano_publicacao = int(input('Digite o ano de publicação do artigo'))
+                        except ValueError as erro:
+                            print(erro.__cause__)
+                            continue
+
+                    if novo_artigo.palavras_chave is []:
+                        print('-'*30)
+                        palavras = input('Digite as palavras chaves para o artigo ex(computação, engenharia, bioquímica): ').replace(' ', '').split()
+                    
                     
                 ...
             case 2:

@@ -9,6 +9,13 @@ class Autor:
     def __str__(self) -> str:
         return f'\tNOME: {self._nome}\n\tINSTITUIÇÃO: {self._instituicao}\n\n'
 
+    @property
+    def lista_autores() -> list:
+        return Autor._lista_autores
+    
+    @lista_autores.setter
+    def lista_autores(lista: list) -> None:
+        Autor._lista_autores = lista[:]
 
     @property
     def nome(self) -> str:
