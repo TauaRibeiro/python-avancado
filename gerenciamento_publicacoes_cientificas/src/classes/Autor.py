@@ -49,14 +49,15 @@ class Autor:
 
 
     @staticmethod
-    def mostrarAutores() -> str:
+    def mostrarAutores(autor_procurado= None) -> str:
         if Autor.estaVazia():
             return 'Não há autores cadastrados'
         
         resultado = []
 
         for autor in Autor._lista_autores:
-            resultado.append(str(autor))
+            if autor_procurado is None or autor is autor_procurado:
+                resultado.append(str(autor))
         
         return ''.join(resultado)
 
@@ -86,7 +87,7 @@ class Autor:
         
         
     @staticmethod
-    def obterAutores(*indices_autores: int) -> list:
+    def obterAutores(indices_autores: list[int]) -> list:
         resultado = []
 
         for indice in indices_autores:
@@ -103,22 +104,6 @@ class Autor:
         
 # Parte para testes da classe Autor, simulando a interação de um usuário. Além de ajudar na construção da interface principal.
 if __name__ == '__main__':
-    autor1 = Autor('Autor 1', 'Instituição 1')
-    autor2 = Autor('Autor 2', 'Instituição 2')
-    autor3 = Autor('Autor 3', 'Instituição 3')
-    autor4 = Autor('Autor 4', 'Instituição 4')
-    autor5 = Autor('Autor 5', 'Instituição 5')
-    autor6 = Autor('Autor 6', 'Instituição 6')
-    
-    Autor.cadastrarAutor(autor1)
-    Autor.cadastrarAutor(autor2)
-    Autor.cadastrarAutor(autor3)
-    Autor.cadastrarAutor(autor4)
-    Autor.cadastrarAutor(autor5)
-    Autor.cadastrarAutor(autor6)
-
-    print(Autor.obterAutores(0,2,5))
-
     while True:
         print('='*30)
         print('1- Cadastrar',

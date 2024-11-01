@@ -8,6 +8,13 @@ class Artigo:
     _GERADOR_ID = 1
     _lista_artigos = list()
 
+    def __str__(self) -> str:
+        autores = []
+
+        for autor in self._autores:
+            autores.append(Autor.mostrarAutores(autor))
+
+        return f'Título artigo: {self._titulo}\nAutores:\n{''.join(autores)}\nAno publicação: {self._ano_publicacao}\nPalavras chave: {self._palavras_chave}\n\n'
 
     def __init__(self, titulo: str= None, autores: list = [], ano_publicacao: int= None, palavras_chave: list[str]= []) -> None:
 
@@ -20,7 +27,7 @@ class Artigo:
         valido = False
         while not valido:
             valido = True
-            for artigo in Artigo.lista_artigos:
+            for artigo in Artigo._lista_artigos:
                 if Artigo._GERADOR_ID == artigo._id:
                     valido = False
                     break
@@ -79,21 +86,7 @@ class Artigo:
 
     @staticmethod
     def cadastrarArtigo(artigo) -> bool:
-        if len(artigo._titulo) < 4 or len(artigo._autores) == len(artigo._palavras_chaves) == len(artigo._palavras_chave) == 0:
-            return False
-        
-        for autor in artigo._autores:
-            if len(autor[0]) < 3 or len(autor[1]) < 3:
-                return False
-            
-        for palavra_chave in artigo._palavras_chave:
-            if len(palavra_chave) < 4:
-                return False
-        
         Artigo._lista_artigos.append(artigo)
-
-        return True
-
 
     @staticmethod
     def mostrarArtigos() -> str:
@@ -102,7 +95,7 @@ class Artigo:
         
         resultado = []
         for artigo in Artigo._lista_artigos:
-            resultado.append(f'{artigo.__str__}\n')
+            resultado.append(f'{str(artigo)}\n')
 
         return ''.join(resultado)
 
@@ -168,9 +161,9 @@ if __name__ == '__main__':
                             print('Título inválido! O título deve conter no mínimo 3 caracteres...')
                             continue
                     
-                    if novo_artigo._autores is []:
+                    if len(novo_artigo._autores) == 0:
                         print('-'*30)
-                        for indice, autor in enumerate(Autor.lista_autores):
+                        for indice, autor in enumerate(Autor._lista_autores):
                             print(f'{indice+1}- {autor.nome}')
 
                         print('-'*30)
@@ -181,6 +174,7 @@ if __name__ == '__main__':
                             print(f'O erro foi -> {erro.__class__}')
                             continue
                         
+                        print(decisao)
                         if len(decisao) == 0:
                             print('O artigo deve ter no mínimo 1 autor!')
                             continue
@@ -190,25 +184,29 @@ if __name__ == '__main__':
                     if novo_artigo.ano_publicacao is None:
                         print('-'*30)
                         try:
-                            novo_artigo.ano_publicacao = int(input('Digite o ano de publicação do artigo'))
+                            novo_artigo.ano_publicacao = int(input('Digite o ano de publicação do artigo: '))
                         except ValueError as erro:
                             print(erro.__cause__)
                             continue
 
-                    if novo_artigo.palavras_chave is []:
-                        print('-'*30)
-                        palavras = input('Digite as palavras chaves para o artigo ex(computação, engenharia, bioquímica): ').replace(' ', '').split()
+                    print('-'*30)
+                    palavras = input('Digite as palavras chaves para o artigo ex(computação, engenharia, bioquímica): ').replace(' ', '').split(',')
                     
+                    if len(palavras) == 0:
+                        print('O artigo deve ter no mínimo uma palavra chave.')
+                        continue
                     
-                ...
+                    novo_artigo.palavras_chave = palavras
+                    break
+
+                Artigo.cadastrarArtigo(novo_artigo) 
             case 2:
-                ...
+                print(Artigo.mostrarArtigos())
             case 3:
                 ...
             case 4:
                 ...
             case 5:
-                ...
+                break
             case _:
                 ...
-
