@@ -13,6 +13,11 @@ class Menu:
         self.loop = loop
 
     def exibir_menu(self, mensagem_input: str) -> None:
+        self.config_principal = borda_principal+'*'+str(tamanho_borda)
+        self.config_secundario = borda_secundaria+'*'+str(tamanho_borda)
+        self.input = None
+    
+    def exibir_menu(self, mensagem: str) -> None:
         print(f'{self.titulo:{self.config_titulo}}')
 
         for indice, campo in enumerate(self.campos):
@@ -81,4 +86,3 @@ if __name__ == "__main__":
     while tela_teste.loop:
         tela_teste.exibir_menu("Digite o número do campo: ")
         tela_teste.executar_acao()
-
