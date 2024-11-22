@@ -1,5 +1,5 @@
 from datetime import date
-from ClassAutor import Autor # Passar a nomear os arquivos de classes como classe_<nome classe>
+from ...classes.ClasseAutor import Autor # Passar a nomear os arquivos de classes como classe_<nome classe>
 
 '''
 Voltar a mexer aqui após ter terminado a classe Autor.
