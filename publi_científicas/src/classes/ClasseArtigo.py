@@ -1,9 +1,7 @@
 from datetime import date
-from publi_científicas.src.classes.ClasseAutor import Autor # Passar a nomear os arquivos de classes como classe_<nome classe>
+from ClasseAutor import Autor # Passar a nomear os arquivos de classes como classe<nome classe>
 
-'''
-Voltar a mexer aqui após ter terminado a classe Autor.
-'''
+
 class Artigo:
     _GERADOR_ID = 1
     _lista_artigos = list()
