@@ -1,5 +1,5 @@
 from datetime import date
-from ClasseAutor import Autor # Passar a nomear os arquivos de classes como classe<nome classe>
+from .ClasseAutor import Autor
 
 
 class Artigo:
