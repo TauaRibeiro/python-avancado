@@ -1,3 +1,3 @@
-from Testes.importacoes import runImportacoes
+from Testes.testeCriadorMenus import runTesteCriadorMenus
 
-runImportacoes()
+runTesteCriadorMenus()

@@ -2,6 +2,6 @@ from src.classes import Artigo
 from src.classes import Autor
 
 
-def runImportacoes():
+def runTesteImportacoes():
     print(Artigo)
     print(Autor)

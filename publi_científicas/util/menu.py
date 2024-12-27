@@ -23,9 +23,6 @@ class Menu:
         
         try:
             entrada = input(mensagem_input)
-        except ValueError:
-            print('Por favor digite um número válido...')
-            self.exibir_menu()
         except KeyboardInterrupt:
             exit(0)
 
@@ -40,17 +37,30 @@ class Menu:
                 print("Por favor escolha apenas uma das opções dadas...")
                 entrada = None
                 self.exibir_menu(mensagem_input)
+                return
             else:
                 for i in entrada:
-                    i = int(i)
+                    try:
+                        i = int(i)
+                    except ValueError:
+                        print('Por favor digite um número válido...')
+                        self.input = None
+                        self.exibir_menu(mensagem_input)
+                        return
+
                     if i < 0:
-                        i *= -1
+                        print('Por favor digite um número positivo...')
+                        self.input = None
+                        self.exibir_menu(mensagem_input)
+                        return
+                    
                     try:
                         self.acoes[i]
                     except IndexError:
                         print('Opção inválida!! Por favor tente novamente...')
                         self.input = None
-                        self.exibir_menu(mensagem_input) 
+                        self.exibir_menu(mensagem_input)
+                        return 
 
                 self.input = entrada 
         
@@ -62,23 +72,3 @@ class Menu:
 
         self.input = None
     
-        
-def acao1():
-    print("Executando acao 1")
-
-def acao2():
-    print("Executando acao 2")
-
-def acao3():
-    print("Executando acao 3")
-
-def acao4():
-    print("Executando acao 4")    
-
-if __name__ == "__main__":
-    tela_teste = Menu(["Campo 1", "Campo 2", "Campo 3", "Campo 4"], [acao1, acao2, acao3, acao4], titulo= "Menu de teste", loop= True)
-
-    while tela_teste.loop:
-        tela_teste.exibir_menu("Digite o número do campo: ")
-        tela_teste.executar_acao()
-
