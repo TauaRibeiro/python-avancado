@@ -75,11 +75,6 @@ class Autor:
 
 
     @staticmethod
-    def excluirAutor(indice_autor) -> None:
-        Autor._lista_autores.pop(indice_autor)
-
-
-    @staticmethod
     def estaVazia() -> bool:
         if len(Autor._lista_autores) == 0:
             return True

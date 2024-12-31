@@ -1,3 +1,3 @@
-from Testes.testeCriadorMenus import runTesteCriadorMenus
+from src.view.menu_principal import runMenuPrincipal
 
-runTesteCriadorMenus()
+runMenuPrincipal()
