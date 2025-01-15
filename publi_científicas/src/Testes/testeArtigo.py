@@ -61,7 +61,7 @@ def runTesteArtigo():
                         try:
                             novo_artigo.ano_publicacao = int(input('Digite o ano de publicação do artigo: '))
                         except ValueError as erro:
-                            print(erro.__cause__)
+                            print(f"{erro.args}")
                             continue
 
                     print('-'*30)
