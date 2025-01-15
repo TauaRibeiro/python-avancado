@@ -79,8 +79,17 @@ class Artigo:
         if len(lista_palavras) == 0:
             raise ValueError('O artigo deve ter no mínimo uma palavra chave')
         
-        self._palavras_chave = lista_palavras[:]
-        
+        self._palavras_chave = lista_palavras[:]    
+
+    @staticmethod
+    @property
+    def lista_artigos(self) -> list:
+        return Artigo._lista_artigos
+    
+    @staticmethod
+    @lista_artigos.setter
+    def lista_artigos(lista_artigos: list) -> None:
+        Artigo._lista_artigos = lista_artigos
 
     @staticmethod
     def cadastrarArtigo(artigo) -> bool:
@@ -96,6 +105,10 @@ class Artigo:
             resultado.append(f'{str(artigo)}\n')
 
         return ''.join(resultado)
+
+    @staticmethod
+    def estavazio() -> bool:
+        return True if len(Artigo._lista_artigos) == 0 else False 
 
     
     @staticmethod
