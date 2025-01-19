@@ -79,7 +79,10 @@ class Autor:
         if len(Autor._lista_autores) == 0:
             return True
         return False
-        
+
+    @staticmethod
+    def getListaAutores() -> list:
+        return Autor._lista_autores    
         
     @staticmethod
     def obterAutores(indices_autores: list[int]) -> list:
