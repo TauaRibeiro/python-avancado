@@ -1,12 +1,15 @@
 from src.util.menu import Menu
-from src.classes.ClasseArtigo import Artigo
-from src.classes.ClasseAutor import Autor
+from src.classes.ClasseArtigo import Artigo, Autor
+from src.models.autoresRecorrentes import autoresRecorrentes
+from src.models.palavrasChavesRecorrentes import palavrasChavesRecorrentes
 
-def CadastrarArtigo(novo_artigo: Artigo):
+def CadastrarArtigo():
     if Autor.estaVazia():
         print("Não há autores cadastrados...")
         return
     
+    novo_artigo = Artigo()
+
     if novo_artigo.titulo is None:
         try:
             print("-"*30)
@@ -18,16 +21,18 @@ def CadastrarArtigo(novo_artigo: Artigo):
     if novo_artigo.ano_publicacao is None:
         try:
             print("-"*30)
-            novo_artigo.ano_publicacao = int(input("Digite o ano de publicação do artigo"))
+            novo_artigo.ano_publicacao = int(input("Digite o ano de publicação do artigo: "))
         except ValueError as ve:
             print(ve.args)
             CadastrarArtigo(novo_artigo)
 
-    if novo_artigo.autores is None:
-        menu_autores = Menu([Autor.obterAutores(i) for i in Autor.lista_autores], [], 
+    if len(novo_artigo.autores) == 0:
+        menu_autores = Menu([i.nome for i in Autor.getListaAutores()], [], 
                             "Digite os números das opções desejadas ex(1; 1,2,3): ", "",
                             "-", ".",
                             multiplos_argumento= True)
+        menu_autores.exibir_menu()
+
         try:
             novo_artigo.autores = Autor.obterAutores([int(i)-1 for i in menu_autores.input()])
         except ValueError as ve:
@@ -44,7 +49,7 @@ def CadastrarArtigo(novo_artigo: Artigo):
     Artigo.cadastrarArtigo(novo_artigo)
 
 def ExibirArtigos():
-    Artigo.mostrarArtigos()
+    print(Artigo.mostrarArtigos())
 
 def PesquisarArtigos():
     if Artigo.estavazio():
@@ -67,7 +72,16 @@ def PesquisarArtigos():
     print(resultado)
 
 def GerarRelatorio():
-    pass
+    autores_recorrentes = autoresRecorrentes()
+    palavras_recorrentes = palavrasChavesRecorrentes()
+
+    print(f"{'Foi publicado' if len(Artigo.lista_artigos) == 1 else 'Foram publicados'}",
+          f" {len(Artigo.lista_artigos)} {'artigo' if len(Artigo.lista_artigos) == 1 else 'artigos'}.")
+    print(f"{'O autor mais recorrente' if len(autoresRecorrentes) == 1 else 'Os autores mais recorrentes'}",
+          f" {'foi' if len(autoresRecorrentes) == 1 else 'foram'} {autores_recorrentes}")
+    print(f"{'A palavra chave mais recorrente' if len(autoresRecorrentes) == 1 else 'As  palavras chave mais recorrentes'}",
+          f" {'foi' if len(autoresRecorrentes) == 1 else 'foram'} {palavras_recorrentes}")
+    
 
 def runMenuArtigo():
     menu_artigo = Menu(["Cadastrar artigo", "Exibir artigos", "Pesquisar artigos", "Gerar relatório final"],
@@ -76,4 +90,4 @@ def runMenuArtigo():
 
     menu_artigo.exibir_menu()
     menu_artigo.executar_acao()
-    pass
+    

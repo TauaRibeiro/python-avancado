@@ -1,4 +1,4 @@
 from src.view.menu_principal import runMenuPrincipal
-from src.Testes.testeArtigo import runTesteArtigo
 
-runTesteArtigo()
+if __name__ == "__main__":
+    runMenuPrincipal()

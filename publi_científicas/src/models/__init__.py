@@ -1,0 +1,2 @@
+from .autoresRecorrentes import autoresRecorrentes
+from .palavrasChavesRecorrentes import palavrasChavesRecorrentes

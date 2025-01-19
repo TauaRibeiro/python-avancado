@@ -23,6 +23,6 @@ def runMenuEdicaoAutor(decisao: int, autor_editado: Autor):
                        multiplos_argumento= True)
     
     menu_edicao.exibir_menu()
-    menu_edicao.executar_acao()
+    menu_edicao.executar_acao(autor_editado)
 
     Autor.editarAutor(decisao, autor_editado)

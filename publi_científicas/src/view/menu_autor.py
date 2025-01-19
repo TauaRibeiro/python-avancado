@@ -46,7 +46,7 @@ def EditarAutor():
 def runMenuAutor():
     menu_autor = Menu(["Cadastrar autor", "Listar autores", "Editar autor"],
                       [CadastrarAutor, ListarAutores, EditarAutor], 
-                      "Digite o número da opção desejada","MENU AUTOR", loop= True)
+                      "Digite o número da opção desejada: ","MENU AUTOR", loop= True)
     
     menu_autor.exibir_menu()
     menu_autor.executar_acao()

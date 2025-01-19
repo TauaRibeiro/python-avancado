@@ -81,12 +81,10 @@ class Artigo:
         
         self._palavras_chave = lista_palavras[:]    
 
-    @staticmethod
     @property
     def lista_artigos(self) -> list:
         return Artigo._lista_artigos
     
-    @staticmethod
     @lista_artigos.setter
     def lista_artigos(lista_artigos: list) -> None:
         Artigo._lista_artigos = lista_artigos

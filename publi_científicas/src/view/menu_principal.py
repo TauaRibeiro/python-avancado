@@ -1,12 +1,10 @@
 from src.util.menu import Menu
 from src.view.menu_autor import runMenuAutor
-
-def irMenuArtigo():
-    pass
+from src.view.menu_artigo import runMenuArtigo
 
 def runMenuPrincipal():
     tela_principal = Menu(["Seção de autores", "Seção de artigos"], 
-                          [runMenuAutor, irMenuArtigo], "Digite o número da opção desejada: ",
+                          [runMenuAutor, runMenuArtigo], "Digite o número da opção desejada: ",
                         "MENU PRINCIPAL", loop= True)
     
     tela_principal.exibir_menu()

@@ -108,17 +108,17 @@ class Menu:
             self.input = entrada 
     
 
-    def executar_acao(self):
+    def executar_acao(self, *args, **kwargs):
         """
         - Executa a ação escolhida pelo usuário.        
         """
         if self.input != 'x':
             for i in self.input:
-                self.acoes[int(i)-1]()
+                self.acoes[int(i)-1](*args, **kwargs)
 
         self.input = None
 
         if self.loop:
             self.exibir_menu()
-            self.executar_acao()
+            self.executar_acao(*args, **kwargs)
     
