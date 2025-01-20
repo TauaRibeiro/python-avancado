@@ -63,43 +63,45 @@ class Menu:
         except KeyboardInterrupt:
             exit(0)
 
-        if entrada.lower().strip() == 'x':
-            self.input = 'x'
+        if entrada.lower().strip() == 'x' and self.loop:
             self.loop = False
-        else:  
-            entrada = entrada.replace(' ', '').split(',')
-            print(self.config_principal)
-            
-            if not self.loop and input == 'x':
-                print('Por favor digite o um dos números fornecidos...')
+            self.input = 'x'
+            return
+
+        entrada = entrada.replace(' ', '').split(',')
+        print(self.config_principal)
+        
+        if not self.loop and input == 'x':
+            print('Por favor digite o um dos números fornecidos...')
+            self.input = None
+            self.exibir_menu()
+            return 
+        
+        if not self.mult_argumentos and len(entrada) > 1:
+            print("Por favor escolha apenas uma das opções dadas...")
+            entrada = None
+            self.exibir_menu()
+            return
+        
+        for i in entrada:
+            try:
+                i = int(i)
+            except ValueError:
+                print('Por favor digite um número válido...')
                 self.input = None
                 self.exibir_menu()
-                return 
-            
-            if not self.mult_argumentos and len(entrada) > 1:
-                print("Por favor escolha apenas uma das opções dadas...")
-                entrada = None
+                return
+
+            if i <= 0:
+                print('Por favor digite um número maior que zero...')
+                self.input = None
                 self.exibir_menu()
                 return
             
-            for i in entrada:
-                try:
-                    i = int(i)
-                except ValueError:
-                    print('Por favor digite um número válido...')
-                    self.input = None
-                    self.exibir_menu()
-                    return
-
-                if i <= 0:
-                    print('Por favor digite um número maior que zero...')
-                    self.input = None
-                    self.exibir_menu()
-                    return
-                
-                try:
-                    self.acoes[i-1]
-                except IndexError:
+            try:
+                self.acoes[i-1]
+            except IndexError:
+                if len(self.acoes) != 0:
                     print('Opção inválida!! Por favor tente novamente...')
                     self.input = None
                     self.exibir_menu()
@@ -107,7 +109,6 @@ class Menu:
 
             self.input = entrada 
     
-
     def executar_acao(self, *args, **kwargs):
         """
         - Executa a ação escolhida pelo usuário.        

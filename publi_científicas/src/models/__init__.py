@@ -1,2 +1,4 @@
 from .autoresRecorrentes import autoresRecorrentes
 from .palavrasChavesRecorrentes import palavrasChavesRecorrentes
+from .ler_dados import lerDados
+from .carregar_dados import carregarDados

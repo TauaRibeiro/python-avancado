@@ -6,7 +6,7 @@ def autoresRecorrentes() -> list[str]:
     artigo: Artigo
     autor: Autor
 
-    for artigo in Artigo.lista_artigos:
+    for artigo in Artigo.getListaArtigos():
         for autor in artigo.autores:
             if autor.nome not in contagem_autores.keys():
                 contagem_autores[autor.nome] = 1

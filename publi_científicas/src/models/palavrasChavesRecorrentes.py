@@ -5,7 +5,7 @@ def palavrasChavesRecorrentes() -> list[str]:
     contagem_palavras = dict()
     artigo: Artigo
 
-    for artigo in Artigo.lista_artigos:
+    for artigo in Artigo.getListaArtigos():
         for palavra_chave in artigo.palavras_chave:
             if palavra_chave not in contagem_palavras.keys():
                 contagem_palavras[palavra_chave] = 1

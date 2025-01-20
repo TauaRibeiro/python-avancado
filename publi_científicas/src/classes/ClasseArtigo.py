@@ -81,14 +81,6 @@ class Artigo:
         
         self._palavras_chave = lista_palavras[:]    
 
-    @property
-    def lista_artigos(self) -> list:
-        return Artigo._lista_artigos
-    
-    @lista_artigos.setter
-    def lista_artigos(lista_artigos: list) -> None:
-        Artigo._lista_artigos = lista_artigos
-
     @staticmethod
     def cadastrarArtigo(artigo) -> bool:
         Artigo._lista_artigos.append(artigo)
@@ -105,10 +97,17 @@ class Artigo:
         return ''.join(resultado)
 
     @staticmethod
+    def getListaArtigos() -> list:
+        return Artigo._lista_artigos
+    
+    @staticmethod
     def estavazio() -> bool:
         return True if len(Artigo._lista_artigos) == 0 else False 
 
-    
+    @staticmethod
+    def getListaArtigos() -> list:
+        return Artigo._lista_artigos
+
     @staticmethod
     def atualizarArtigo(id_artigo_desatualizado: int, artigo_atualizado) -> bool:
         if len(Artigo._lista_artigos) == 0:
